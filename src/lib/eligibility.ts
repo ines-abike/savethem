@@ -69,6 +69,22 @@ export function getAge(birthDate: Date, referenceDate: Date): number {
 }
 
 /**
+ * Date de naissance produisant exactement `age` à la date de référence.
+ *
+ * Le domaine raisonne sur une date de naissance, mais l'interface demande
+ * l'âge (§16 : « Quel âge avez-vous ? ») — un champ numérique plutôt qu'un
+ * sélecteur de date, c'est une friction en moins sur mobile. Cette fonction
+ * fait le pont, sans introduire un second chemin de calcul.
+ */
+export function birthDateForAge(age: number, referenceDate: Date): Date {
+  return new Date(
+    referenceDate.getFullYear() - age,
+    referenceDate.getMonth(),
+    referenceDate.getDate(),
+  );
+}
+
+/**
  * Ajoute `months` mois à une date en gérant les débordements de fin de mois
  * (31 janvier + 1 mois → 28/29 février, et non le 2 ou 3 mars).
  */
