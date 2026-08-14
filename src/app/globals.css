@@ -1,44 +1,67 @@
 @import "tailwindcss";
 
 /*
- * Socle neutre. L'identité visuelle de Savethem (palette, typographie,
- * rythme) sera définie à l'étape design et viendra remplacer ces tokens.
+ * Design system Savethem — cf. CLAUDE.md §26.
+ *
+ * Sémantique : White apaise. Ink informe. Red fait agir. Green rassure.
+ * Gray structure.
+ *
+ * Thème clair uniquement (§30.2). Tous les couples texte/fond ci-dessous
+ * ont été vérifiés au ratio WCAG AA (≥ 4.5:1 pour le texte, ≥ 3:1 pour les
+ * bordures porteuses de sens).
  */
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+@theme {
+  /* — Fondamentaux — */
+  --color-background: #ffffff;
+  --color-surface: #f8f8f7;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-ink: #18181b; /* 17.72:1 sur blanc */
+  --color-ink-secondary: #3f3f46; /* 10.44:1 */
+  --color-muted: #71717a; /* 4.83:1 — plancher AA */
+
+  --color-primary: #c62828; /* 5.62:1 */
+  --color-primary-hover: #a91f1f; /* 7.23:1 en inverse */
+  --color-primary-soft: #fdecec;
+  --color-primary-subtle: #fff6f6;
+
+  --color-border: #e4e4e7; /* décoratif uniquement (1.27:1) */
+  --color-border-strong: #8e8e96; /* champs et contrôles — 3.25:1 */
+
+  /* — Sémantiques — */
+  --color-success: #16803c; /* 5.02:1 */
+  --color-success-soft: #eaf7ef;
+  --color-warning: #b45309; /* 5.02:1 */
+  --color-warning-soft: #fff7e8;
+  --color-error: #b42318; /* 6.57:1 */
+  --color-error-soft: #fef3f2;
+  --color-info: #2563eb; /* 5.17:1 */
+
+  /* — Typographie — */
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family:
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    "Segoe UI",
-    Roboto,
-    Helvetica,
-    Arial,
-    sans-serif;
+  background: var(--color-background);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Accessibilité : focus toujours visible au clavier (exigence du brief). */
+/*
+ * Accessibilité — §12 : focus visuel explicite, jamais supprimé.
+ * `currentColor` échouerait sur les fonds rouges, d'où l'ancrage sur ink
+ * avec un halo blanc qui garantit la visibilité sur toute surface.
+ */
 :focus-visible {
-  outline: 2px solid currentColor;
+  outline: 2px solid var(--color-ink);
   outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Sur les grandes surfaces rouges, on inverse le focus. */
+.on-primary :focus-visible {
+  outline-color: var(--color-background);
 }
 
 @media (prefers-reduced-motion: reduce) {

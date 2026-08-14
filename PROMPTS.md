@@ -55,4 +55,40 @@ Brief complet du challenge transmis à l'IA, suivi de : initialiser le projet en
 
 ---
 
-_(Sections suivantes à compléter : identité visuelle, contenus rédactionnels, sections C1→C8, répertoire des centres, accessibilité, responsive.)_
+### 3 — Cadrage produit et design system
+
+**Prompt (résumé)**
+Fourniture d'un document de cadrage produit/UX complet (benchmark EFS, Red Cross, Lifeblood, NHS ; principes UX ; architecture narrative ; palette ; typographie), déposé dans `CLAUDE.md` pour être chargé à chaque session. Consigne : en prendre connaissance et l'enregistrer.
+
+**Arbitrage de méthode**
+Le document a été placé dans `CLAUDE.md` plutôt que dans une mémoire de l'assistant, précisément parce que `CLAUDE.md` est versionné et rechargé automatiquement : une copie en mémoire aurait divergé silencieusement. `CLAUDE.md` fait donc foi.
+
+**Incohérences détectées dans le document et corrigées**
+
+Le document demandait explicitement (§20) de challenger les décisions avant de les valider. Six points ont été relevés :
+
+1. **Nom résiduel.** Le document parlait encore de « HemoLink », le nom-exemple du brief. Renommé en Savethem (15 occurrences). Effet de bord non trivial : la piste conceptuelle du §9 reposait sur le mot _Link_ — elle ne tenait plus. Remplacée par le concept de **trajectoire** (« une poche de sang est le début d'un trajet qui va jusqu'à quelqu'un »), qui découle du nouveau nom et reste fidèle à l'intention d'origine : éviter un univers centré sur le sang.
+2. **Simulateur incohérent avec lui-même.** §26.4 listait 4 entrées obligatoires (âge, poids, sexe, dernier don) mais §16 n'affichait que 3 étapes, sans le sexe — or c'est lui qui détermine le délai (3 mois / 4 mois). Résolu sans ajouter d'étape : le sexe n'est demandé **que si la personne a déjà donné**, puisqu'il est inutile sinon. Cohérent avec la consigne « ne pas demander des informations inutiles ».
+3. **Contraste de bordure insuffisant.** Les ratios WCAG de toute la palette ont été calculés, pas estimés. Tout passe AA (ink 17.72:1, primary 5.62:1, success 5.02:1, muted 4.83:1). Une seule exception : `border #E4E4E7` à **1.27:1**, sous le seuil de 3:1 exigé par WCAG 1.4.11 dès qu'une bordure délimite un composant — et le simulateur est un formulaire. Ajout d'un token `border-strong #8E8E96` (3.25:1 sur blanc, 3.06:1 sur `surface`) réservé aux champs et contrôles.
+4. **Statut ouvert/fermé et rendu statique.** Le statut d'un centre dépend de l'heure courante ; le calculer au rendu serveur produirait une valeur figée au build et un _hydration mismatch_ côté client. Décidé : calcul après montage client, avec un état intermédiaire explicite plutôt qu'un faux « fermé ».
+5. **Dark mode non tranché.** Le design system ne définit qu'une palette claire, mais le scaffolding Next.js embarquait un bloc `prefers-color-scheme: dark` — une page à moitié cassée pour un visiteur en thème sombre. Décision : thème clair uniquement, bloc retiré.
+6. **Deux candidates pour la section rouge pleine.** §26.4 proposait « Pourquoi donner » _ou_ « État des réserves », §26.6 plafonnant le rouge à ~10 %. Les deux auraient dilué l'impact. Retenu : « Pourquoi donner ». Les réserves restent sur fond blanc — le rouge y basculerait vers l'anxiogène que l'insight 06 cherche justement à éviter.
+
+**Décisions prises par le porteur du projet**
+
+- **Illustrations en SVG codés à la main**, aucun asset externe. Garantit l'originalité exigée par le brief, au prix assumé de renoncer aux figures humaines détaillées : l'humain passera par la copie et le rythme.
+- **Pas de dark mode.**
+- **Section rouge = « Pourquoi donner ».**
+
+**Ajustements manuels sur la production de l'IA**
+
+- Le document fourni avait écrasé le `CLAUDE.md` d'origine, qui importait `AGENTS.md` (conventions Next.js 16, générées par `next dev` et différentes des données d'entraînement du modèle). Import restauré en fin de fichier.
+- Le focus visible utilisait initialement `currentColor`, ce qui l'aurait rendu invisible sur les grandes surfaces rouges. Remplacé par un ancrage sur `ink`, avec inversion explicite sur fond primaire.
+
+**Limites rencontrées**
+
+- Le document de cadrage était cohérent sur le fond mais contenait plusieurs contradictions internes qu'une lecture rapide aurait laissé passer — et qu'une IA qui se contente d'exécuter n'aurait pas relevées. Le simulateur aurait notamment été construit à 3 entrées, donc avec un calcul de délai faux.
+
+---
+
+_(Sections suivantes à compléter : contenus rédactionnels, sections C1→C8, répertoire des centres, accessibilité, responsive.)_
