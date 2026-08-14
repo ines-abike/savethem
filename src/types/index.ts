@@ -74,3 +74,21 @@ export interface DonationStep {
   /** Durée indicative de l'étape, en minutes. */
   durationMinutes: number;
 }
+
+/** Moment auquel se rapporte un conseil de préparation (C5). */
+export type PreparationPhase = "avant" | "pendant" | "apres";
+
+export interface PreparationTip {
+  id: string;
+  phase: PreparationPhase;
+  title: string;
+  description: string;
+}
+
+/** Chiffre d'impact mis en avant dans la section « Pourquoi donner » (C1). */
+export interface ImpactStat {
+  id: string;
+  value: string;
+  label: string;
+  detail: string;
+}
