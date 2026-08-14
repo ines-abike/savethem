@@ -41,8 +41,16 @@ export function Header() {
           </ul>
         </nav>
 
+        {/*
+          Libellé raccourci sous `sm` : à 390 px, « Vérifier mon éligibilité »
+          et le logo se disputent la largeur. Le libellé complet reste dans le
+          DOM pour les lecteurs d'écran.
+        */}
         <ButtonLink href="#puis-je-donner" className="shrink-0">
-          Vérifier mon éligibilité
+          <span aria-hidden="true" className="sm:hidden">
+            Vérifier
+          </span>
+          <span className="max-sm:sr-only">Vérifier mon éligibilité</span>
         </ButtonLink>
       </Container>
     </header>

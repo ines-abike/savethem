@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Globe, Mail, MapPin, Phone } from "lucide-react";
 import type { DonationCenter } from "@/types";
 import {
@@ -29,22 +30,40 @@ export function CenterDetailDialog({
   now: Date | null;
   onClose: () => void;
 }) {
-  const open = center !== null && now !== null ? isOpenNow(center, now) : null;
+  /*
+   * Le dernier centre affiché est conservé après la fermeture.
+   *
+   * Le `<dialog>` reste monté en permanence — c'est ce qui garantit le
+   * retour du focus sur le bouton déclencheur. Sans cette rétention, son
+   * titre repasserait à vide et laisserait un `<h2></h2>` dans le document.
+   *
+   * Ajustement d'état pendant le rendu : le motif est explicitement prévu
+   * par React pour dériver un état d'une prop qui change.
+   */
+  const [lastCenter, setLastCenter] = useState(center);
+  if (center !== null && center !== lastCenter) {
+    setLastCenter(center);
+  }
+
+  const displayed = center ?? lastCenter;
+
+  const open =
+    displayed !== null && now !== null ? isOpenNow(displayed, now) : null;
   const nextOpening =
-    center && now && open === false ? getNextOpening(center, now) : null;
+    displayed && now && open === false ? getNextOpening(displayed, now) : null;
   const today = now?.getDay() ?? null;
 
   return (
     <Dialog
       open={center !== null}
       onClose={onClose}
-      title={center?.name ?? ""}
+      title={displayed?.name ?? "Détail du centre"}
       className="max-w-xl"
     >
-      {center && (
+      {displayed && (
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-3">
-            <Badge>{ESTABLISHMENT_KIND_LABELS[center.kind]}</Badge>
+            <Badge>{ESTABLISHMENT_KIND_LABELS[displayed.kind]}</Badge>
             <StatusIndicator
               status={now === null ? "unknown" : open ? "open" : "closed"}
               detail={
@@ -59,7 +78,7 @@ export function CenterDetailDialog({
             <h3 className="text-sm font-semibold text-ink">Horaires</h3>
 
             <ul className="divide-y divide-border text-sm">
-              {getWeeklySchedule(center).map(({ day, label, slots }) => (
+              {getWeeklySchedule(displayed).map(({ day, label, slots }) => (
                 <li
                   key={day}
                   className={cn(
@@ -101,9 +120,9 @@ export function CenterDetailDialog({
                   className="mt-0.5 size-4 shrink-0 text-muted"
                 />
                 <span>
-                  {center.address.street}
+                  {displayed.address.street}
                   <br />
-                  {center.address.postalCode} {center.address.city}
+                  {displayed.address.postalCode} {displayed.address.city}
                 </span>
               </li>
 
@@ -112,38 +131,38 @@ export function CenterDetailDialog({
                   aria-hidden="true"
                   className="size-4 shrink-0 text-muted"
                 />
-                <a href={`tel:${center.contact.phone.replace(/\s/g, "")}`}>
-                  {center.contact.phone}
+                <a href={`tel:${displayed.contact.phone.replace(/\s/g, "")}`}>
+                  {displayed.contact.phone}
                 </a>
               </li>
 
-              {center.contact.email && (
+              {displayed.contact.email && (
                 <li className="flex items-center gap-2">
                   <Mail
                     aria-hidden="true"
                     className="size-4 shrink-0 text-muted"
                   />
                   <a
-                    href={`mailto:${center.contact.email}`}
+                    href={`mailto:${displayed.contact.email}`}
                     className="break-all"
                   >
-                    {center.contact.email}
+                    {displayed.contact.email}
                   </a>
                 </li>
               )}
 
-              {center.contact.website && (
+              {displayed.contact.website && (
                 <li className="flex items-center gap-2">
                   <Globe
                     aria-hidden="true"
                     className="size-4 shrink-0 text-muted"
                   />
                   <a
-                    href={center.contact.website}
+                    href={displayed.contact.website}
                     className="break-all"
                     rel="noreferrer"
                   >
-                    {center.contact.website.replace(/^https?:\/\//, "")}
+                    {displayed.contact.website.replace(/^https?:\/\//, "")}
                   </a>
                 </li>
               )}
@@ -154,7 +173,7 @@ export function CenterDetailDialog({
             <h3 className="text-sm font-semibold text-ink">Dons acceptés</h3>
 
             <ul className="flex flex-wrap gap-1.5">
-              {center.donationTypes.map((type) => (
+              {displayed.donationTypes.map((type) => (
                 <li key={type}>
                   <Badge tone="primary">{DONATION_TYPE_LABELS[type]}</Badge>
                 </li>
@@ -162,7 +181,7 @@ export function CenterDetailDialog({
             </ul>
 
             <p className="text-sm text-ink-secondary">
-              {APPOINTMENT_MODE_LABELS[center.appointmentMode]}
+              {APPOINTMENT_MODE_LABELS[displayed.appointmentMode]}
             </p>
           </section>
 

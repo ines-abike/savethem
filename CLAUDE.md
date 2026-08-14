@@ -919,6 +919,25 @@ Le rouge est une couleur identitaire et émotionnelle, mais son utilisation doit
 > 3.06 : 1 sur `surface`), obligatoire sur tous les champs du simulateur et
 > des filtres.
 
+### Texte sur la surface rouge — pas d'opacité sous 90 %
+
+`#C62828` ne contraste qu'à **5.62 : 1** avec le blanc pur : la marge
+au-dessus du seuil AA (4.5 : 1) est mince, et la transparence l'épuise vite.
+
+| Blanc à | Contraste sur `primary` | Verdict |
+| ------- | ----------------------- | ------- |
+| 100 %   | 5.62 : 1                | AA      |
+| 95 %    | 5.19 : 1                | AA      |
+| 90 %    | 4.81 : 1                | AA      |
+| 85 %    | 4.43 : 1                | échec   |
+| 80 %    | 4.07 : 1                | échec   |
+| 60 %    | 2.86 : 1                | échec   |
+
+**Règle :** sur un fond `primary`, le texte est blanc pur ou `background/90`,
+jamais moins. La hiérarchie visuelle s'y construit donc à la **taille** et à
+la **graisse**, pas à la transparence — réflexe qui fonctionne sur les fonds
+sombres (`ink` tolère le blanc jusqu'à 50 %) mais casse ici.
+
 ### Couleurs sémantiques
 
 | Token          | Hex       | Usage                         |

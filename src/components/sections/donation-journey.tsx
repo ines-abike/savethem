@@ -39,11 +39,17 @@ export function DonationJourney() {
           d'écran doit l'entendre comme « 1 sur 4 », pas comme une liste à
           puces indifférenciée.
         */}
-        <ol className="mt-12 grid gap-px sm:grid-cols-2 lg:grid-cols-4">
+        {/*
+          Cartes indépendantes plutôt qu'une bande continue : à deux colonnes
+          (sm), arrondir « le premier à gauche, le dernier à droite » produit
+          une grille 2×2 bancale. La séquence est portée par les numéros, qui
+          fonctionnent à toutes les largeurs.
+        */}
+        <ol className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {DONATION_STEPS.map((step, index) => (
             <li
               key={step.id}
-              className="relative flex flex-col gap-3 bg-background p-6 first:rounded-t-3xl last:rounded-b-3xl sm:first:rounded-t-none sm:first:rounded-l-3xl sm:last:rounded-r-3xl sm:last:rounded-b-none"
+              className="relative flex flex-col gap-3 rounded-3xl border border-border bg-background p-6"
             >
               <div className="flex items-center gap-3">
                 <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-background">

@@ -85,7 +85,9 @@ export function SectionHeader({
         <p
           className={cn(
             "mb-3 text-xs font-semibold tracking-[0.18em] uppercase",
-            onPrimary ? "text-background/80" : "text-primary",
+            // Jamais sous 90 % d'opacité sur le fond primaire : le blanc à
+            // 80 % n'y contraste qu'à 4.07:1, sous le seuil AA.
+            onPrimary ? "text-background" : "text-primary",
           )}
         >
           {eyebrow}

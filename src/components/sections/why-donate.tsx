@@ -21,7 +21,13 @@ export function WhyDonate() {
 
       <Container className="relative">
         <div className="max-w-2xl">
-          <p className="mb-3 text-xs font-semibold tracking-[0.18em] text-background/80 uppercase">
+          {/*
+            Aucune opacité sous 90 % sur cette surface : #C62828 ne contraste
+            qu'à 5.62:1 avec le blanc pur, et le blanc à 80 % tombe déjà à
+            4.07:1. La hiérarchie se fait donc à la taille et à la graisse,
+            pas à la transparence.
+          */}
+          <p className="mb-3 text-xs font-semibold tracking-[0.18em] text-background uppercase">
             Pourquoi donner
           </p>
 
@@ -43,7 +49,7 @@ export function WhyDonate() {
               <p className="text-base font-semibold text-balance text-background">
                 {stat.label}
               </p>
-              <p className="text-sm leading-relaxed text-pretty text-background/75">
+              <p className="text-sm leading-relaxed text-pretty text-background/90">
                 {stat.detail}
               </p>
             </li>
@@ -54,7 +60,7 @@ export function WhyDonate() {
           Les chiffres sont des ordres de grandeur, pas un relevé daté : le
           dire explicitement coûte une ligne et évite une fausse précision.
         */}
-        <p className="mt-10 max-w-2xl text-xs leading-relaxed text-background/60">
+        <p className="mt-10 max-w-2xl text-xs leading-relaxed text-background/90">
           Ordres de grandeur arrondis, à titre indicatif. Les chiffres officiels
           et à jour sont publiés par l&apos;Établissement français du sang.
         </p>
