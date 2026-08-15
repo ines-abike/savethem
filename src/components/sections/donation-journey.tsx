@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Clock } from "lucide-react";
 import {
   DONATION_STEPS,
@@ -20,18 +21,40 @@ export function DonationJourney() {
   return (
     <Section id="deroulement" tone="surface">
       <Container>
-        <SectionHeader
-          eyebrow="Première fois ?"
-          title="On vous explique tout, minute par minute"
-          lead="Le prélèvement lui-même dure une dizaine de minutes. C'est tout le reste — l'accueil, l'entretien, le repos — qui compose l'heure sur place."
-        />
+        {/*
+          L'illustration accompagne l'en-tête plutôt que la liste d'étapes :
+          elle montre le décor (fauteuil, pièce calme, soignant) que les
+          cartes décrivent ensuite minute par minute. C'est la seule section
+          où figurer la scène du don travaille pour le propos — dans le hero,
+          elle irait contre la consigne « rassurant et non anxiogène ».
 
-        <div className="mt-6">
-          <Badge tone="primary">
-            <Clock aria-hidden="true" className="size-3.5" />
-            Environ {Math.round(TOTAL_DURATION_MINUTES / 5) * 5} minutes au
-            total
-          </Badge>
+          Conservée sur mobile, contrairement à celle de la FAQ : ici elle
+          désamorce, elle ne décore pas.
+        */}
+        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)]">
+          <div>
+            <SectionHeader
+              eyebrow="Première fois ?"
+              title="On vous explique tout, minute par minute"
+              lead="Le prélèvement lui-même dure une dizaine de minutes. C'est tout le reste — l'accueil, l'entretien, le repos — qui compose l'heure sur place."
+            />
+
+            <div className="mt-6">
+              <Badge tone="primary">
+                <Clock aria-hidden="true" className="size-3.5" />
+                Environ {Math.round(TOTAL_DURATION_MINUTES / 5) * 5} minutes au
+                total
+              </Badge>
+            </div>
+          </div>
+
+          <Image
+            src="/illustrations/blood-donation-amico.svg"
+            alt=""
+            width={500}
+            height={500}
+            className="mx-auto h-auto w-full max-w-sm lg:max-w-none"
+          />
         </div>
 
         {/*
@@ -45,7 +68,7 @@ export function DonationJourney() {
           une grille 2×2 bancale. La séquence est portée par les numéros, qui
           fonctionnent à toutes les largeurs.
         */}
-        <ol className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <ol className="mt-12 grid gap-4 sm:grid-cols-2">
           {DONATION_STEPS.map((step, index) => (
             <li
               key={step.id}

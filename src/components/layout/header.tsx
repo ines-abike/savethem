@@ -22,8 +22,9 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur-sm">
       <Container className="flex h-16 items-center justify-between gap-4">
+        {/* Le lien porte déjà le nom accessible, d'où l'`alt` vide. */}
         <a href="#top" aria-label="Savethem, retour en haut de page">
-          <Logo />
+          <Logo alt="" />
         </a>
 
         <nav aria-label="Sections de la page" className="hidden lg:block">

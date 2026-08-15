@@ -124,9 +124,17 @@ describe("intégrité du jeu de données", () => {
     expect(DONATION_CENTERS.length).toBeGreaterThanOrEqual(8);
   });
 
-  it("répartit les centres sur plusieurs villes", () => {
-    const cities = new Set(DONATION_CENTERS.map((c) => c.address.city));
-    expect(cities.size).toBeGreaterThanOrEqual(5);
+  it("couvre exactement un centre par département béninois", () => {
+    // Le maillage est la promesse du répertoire : un département sans centre
+    // laisserait une région entière sans point d'entrée.
+    const departments = DONATION_CENTERS.map((c) => c.address.department);
+    expect(new Set(departments).size).toBe(12);
+    expect(departments).toHaveLength(12);
+  });
+
+  it("place chaque centre dans une ville distincte", () => {
+    const cities = DONATION_CENTERS.map((c) => c.address.city);
+    expect(new Set(cities).size).toBe(cities.length);
   });
 
   it("n'a aucun identifiant en double", () => {
@@ -144,10 +152,22 @@ describe("intégrité du jeu de données", () => {
     }
   });
 
-  it("n'expose que des numéros de la plage fictive ARCEP", () => {
+  it("n'expose que des numéros béninois du bloc fictif interne", () => {
     // Garde-fou : empêche qu'un vrai numéro se glisse dans les données.
+    // Format béninois à dix chiffres, sur un bloc `00 00` qui se lit comme
+    // un gabarit.
     for (const center of DONATION_CENTERS) {
-      expect(center.contact.phone).toMatch(/^0\d 99 00 \d{2} \d{2}$/);
+      expect(center.contact.phone).toMatch(/^\+229 01 00 00 \d{2} \d{2}$/);
+    }
+  });
+
+  it("décrit des adresses au format béninois", () => {
+    // Quartier et département sont la maille de localisation réelle : les
+    // laisser vides casserait la recherche autant que l'affichage.
+    for (const center of DONATION_CENTERS) {
+      expect(center.address.district.length).toBeGreaterThan(0);
+      expect(center.address.department.length).toBeGreaterThan(0);
+      expect(center.address.country).toBe("Bénin");
     }
   });
 

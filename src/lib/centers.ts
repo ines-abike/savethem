@@ -42,10 +42,13 @@ function matchesQuery(center: DonationCenter, query: string): boolean {
   const needle = normalize(query);
   if (needle === "") return true;
 
+  // Le quartier et le département sont indexés : au Bénin, on cherche
+  // « Cadjèhoun » ou « Borgou » aussi naturellement qu'un nom de ville.
   const haystack = [
     center.name,
+    center.address.district,
     center.address.city,
-    center.address.postalCode,
+    center.address.department,
     center.address.street,
   ]
     .map(normalize)

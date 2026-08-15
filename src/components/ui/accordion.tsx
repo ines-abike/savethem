@@ -28,27 +28,21 @@ export function Accordion({
   items: AccordionItem[];
   className?: string;
 }) {
-  // Plusieurs panneaux peuvent rester ouverts : sur une FAQ, refermer la
-  // réponse précédente pour en lire une autre est une friction gratuite.
-  const [openIds, setOpenIds] = useState<Set<string>>(new Set());
+  // Un seul panneau ouvert à la fois : ouvrir une question referme la
+  // précédente. La liste reste ainsi courte et la position de chaque
+  // question stable d'un clic à l'autre, plutôt que de s'allonger au fil
+  // de la lecture. Recliquer sur l'en-tête ouvert le referme.
+  const [openId, setOpenId] = useState<string | null>(null);
   const baseId = useId();
 
   function toggle(id: string) {
-    setOpenIds((current) => {
-      const next = new Set(current);
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
-      }
-      return next;
-    });
+    setOpenId((current) => (current === id ? null : id));
   }
 
   return (
     <ul className={cn("divide-y divide-border border-y", className)}>
       {items.map((item) => {
-        const isOpen = openIds.has(item.id);
+        const isOpen = openId === item.id;
         const headerId = `${baseId}-${item.id}-header`;
         const panelId = `${baseId}-${item.id}-panel`;
 

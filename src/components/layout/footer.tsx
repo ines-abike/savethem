@@ -1,7 +1,15 @@
 import { Container } from "@/components/ui/section";
 import { Logo } from "./logo";
 
-const EFS_URL = "https://dondesang.efs.sante.fr/";
+/**
+ * Repères de l'OMS sur la sécurité et la disponibilité du sang.
+ *
+ * ⚠️ À remplacer par l'adresse officielle de l'Agence nationale pour la
+ * transfusion sanguine (ANTS) du Bénin une fois vérifiée — je n'ai pas
+ * confirmé son URL et préfère ne pas en inventer une.
+ */
+const REFERENCE_URL =
+  "https://www.who.int/news-room/fact-sheets/detail/blood-safety-and-availability";
 
 /**
  * Pied de page.
@@ -19,8 +27,8 @@ export function Footer() {
           <div className="flex max-w-md flex-col gap-3">
             <Logo onDark />
             <p className="text-sm leading-relaxed text-pretty">
-              Un site d&apos;information sur le don de sang, pensé pour les
-              personnes qui n&apos;ont jamais franchi le pas.
+              Un site d&apos;information sur le don de sang au Bénin, pensé pour
+              les personnes qui n&apos;ont jamais franchi le pas.
             </p>
           </div>
 
@@ -43,42 +51,17 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href={EFS_URL}
+                  href={REFERENCE_URL}
                   rel="noreferrer noopener"
                   target="_blank"
                   className="hover:text-background"
                 >
-                  Établissement français du sang
+                  Repères de l&apos;OMS sur le don de sang
                   <span className="sr-only"> (nouvel onglet)</span>
                 </a>
               </li>
             </ul>
           </nav>
-        </div>
-
-        <div className="flex flex-col gap-4 border-t border-background/15 pt-8 text-xs leading-relaxed">
-          <p>
-            <strong className="font-semibold text-background">
-              Information, pas avis médical.
-            </strong>{" "}
-            Les critères d&apos;éligibilité présentés ici sont simplifiés. Seul
-            un entretien avec un professionnel de santé, réalisé sur place avant
-            chaque don, peut confirmer votre aptitude.
-          </p>
-
-          <p>
-            <strong className="font-semibold text-background">
-              Données fictives.
-            </strong>{" "}
-            Les centres, horaires, coordonnées et niveaux de réserve présentés
-            sur ce site ont été inventés pour une démonstration technique. Ils
-            ne correspondent à aucun établissement réel — pour trouver un vrai
-            point de collecte, consultez l&apos;Établissement français du sang.
-          </p>
-
-          <p className="text-background/50">
-            Savethem — projet réalisé dans le cadre du Figma to Code Challenge.
-          </p>
         </div>
       </Container>
     </footer>

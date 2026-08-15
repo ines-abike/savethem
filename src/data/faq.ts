@@ -24,6 +24,17 @@ export const FAQ_ENTRIES: FaqEntry[] = [
       "simplement ne pas regarder.",
   },
   {
+    id: "materiel",
+    category: "idee-recue",
+    question: "Est-ce que je risque d'attraper quelque chose en donnant ?",
+    answer:
+      "Non. Tout ce qui entre en contact avec votre sang — aiguille, tubulure, " +
+      "poche — est stérile, sous emballage scellé, et sert à un seul donneur " +
+      "avant d'être éliminé. Rien n'est réutilisé d'une personne à l'autre. " +
+      "Vous pouvez d'ailleurs demander à voir l'emballage être ouvert devant " +
+      "vous : c'est une demande légitime, et personne ne s'en formalisera.",
+  },
+  {
     id: "duree",
     category: "deroulement",
     question: "Combien de temps ça prend, vraiment ?",
@@ -53,6 +64,29 @@ export const FAQ_ENTRIES: FaqEntry[] = [
       "démarche préalable à faire. Vous pouvez vérifier les critères " +
       "principaux avec le simulateur de cette page, puis vous présenter dans " +
       "un centre — l'entretien médical fera le reste.",
+  },
+  {
+    id: "don-familial",
+    category: "idee-recue",
+    question:
+      "On m'a demandé de donner pour un proche hospitalisé. C'est la même chose ?",
+    answer:
+      "Le geste est le même, le moment ne l'est pas. Là, on donne dans " +
+      "l'urgence, pour quelqu'un de précis, souvent en catastrophe. Le don " +
+      "bénévole, lui, se fait à l'avance : le sang est déjà disponible quand " +
+      "le besoin arrive, et personne n'a eu à courir. Les deux comptent — " +
+      "mais c'est le second qui évite le premier.",
+  },
+  {
+    id: "remuneration",
+    category: "idee-recue",
+    question: "Est-ce qu'on est payé pour donner ?",
+    answer:
+      "Non, et ce n'est pas une économie de bout de chandelle : c'est une " +
+      "question de sécurité. Quand le don n'est pas rémunéré, personne n'a " +
+      "de raison de dissimuler un problème de santé pour être accepté. " +
+      "C'est ce qui rend les réponses de l'entretien médical fiables — et " +
+      "donc le sang plus sûr pour celui qui le recevra.",
   },
   {
     id: "tatouage",

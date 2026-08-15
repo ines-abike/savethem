@@ -1,18 +1,30 @@
 import type { DonationCenter, OpeningSlot, WeekDay } from "@/types";
 
 /**
- * Répertoire des centres de don (C6).
+ * Répertoire des centres de don au Bénin (C6).
  *
  * ⚠️ DONNÉES D'ILLUSTRATION. Ces établissements sont fictifs.
  *
- * Les villes sont réelles, mais les noms, adresses, horaires et contacts sont
- * inventés pour les besoins du challenge. Rattacher de faux horaires au nom
- * d'un vrai centre EFS pourrait envoyer quelqu'un devant une porte close —
- * c'est précisément ce qu'on veut éviter sur un sujet de santé.
+ * Les villes, quartiers et départements sont réels ; les noms
+ * d'établissement, adresses, horaires et contacts sont inventés pour les
+ * besoins du challenge. Rattacher de faux horaires au nom d'un vrai centre de
+ * transfusion pourrait envoyer quelqu'un devant une porte close — sur un
+ * sujet de santé, c'est exactement ce qu'on veut éviter.
  *
- * Les numéros utilisent les plages `0X 99 00 XX XX` réservées par l'ARCEP à
- * la fiction : ils ne peuvent joindre personne. Les domaines en `.example`
- * sont réservés par la RFC 2606 et ne résolvent pas.
+ * **Un centre par département**, soit les douze départements du Bénin. Le
+ * maillage administratif du pays devient ainsi la structure du répertoire :
+ * personne ne se retrouve sans point d'entrée dans sa région, et le filtre
+ * par ville recouvre exactement le filtre par département.
+ *
+ * Les adresses suivent l'usage béninois : on se repère au quartier et à un
+ * point de référence, pas à un code postal.
+ *
+ * Les domaines en `.example` sont réservés par la RFC 2606 et ne résolvent
+ * pas. Les numéros utilisent le format béninois à dix chiffres (`01 XX XX XX
+ * XX`) sur un bloc `00 00` qui se lit comme un gabarit — c'est une convention
+ * interne, pas une plage officiellement réservée à la fiction : la mention
+ * « données d'illustration » affichée dans la section reste la garantie
+ * principale.
  */
 
 /** Construit des créneaux identiques sur une série de jours. */
@@ -28,261 +40,266 @@ const MON_TO_FRI: WeekDay[] = [1, 2, 3, 4, 5];
 
 export const DONATION_CENTERS: DonationCenter[] = [
   {
-    id: "paris-rivoli",
-    name: "Maison du don Rivoli",
+    id: "littoral-cotonou",
+    name: "Maison du don de Cadjèhoun",
     kind: "maison-du-don",
     address: {
-      street: "148 rue de Rivoli",
-      postalCode: "75001",
-      city: "Paris",
-      country: "France",
+      street: "Carrefour Toyota, en face du stade",
+      district: "Cadjèhoun",
+      city: "Cotonou",
+      department: "Littoral",
+      country: "Bénin",
     },
-    coordinates: { latitude: 48.8601, longitude: 2.3419 },
+    coordinates: { latitude: 6.3654, longitude: 2.3892 },
     contact: {
-      phone: "01 99 00 14 20",
-      email: "rivoli@savethem.example",
+      phone: "+229 01 00 00 14 20",
+      email: "cadjehoun@savethem.example",
     },
-    // Ouverture continue en semaine, plus le samedi matin.
+    // Journée continue en semaine, plus le samedi matin.
     openingHours: [
-      ...slots(MON_TO_FRI, "10:00", "19:30"),
-      { day: 6, opensAt: "09:30", closesAt: "13:00" },
+      ...slots(MON_TO_FRI, "08:00", "18:00"),
+      { day: 6, opensAt: "08:30", closesAt: "13:00" },
     ],
     donationTypes: ["sang-total", "plasma", "plaquettes"],
     appointmentMode: "les-deux",
   },
   {
-    id: "paris-nord-hopital",
-    name: "Centre de transfusion de l'hôpital Nord-Villette",
-    kind: "hopital",
+    id: "oueme-porto-novo",
+    name: "Établissement de transfusion d'Ouando",
+    kind: "etablissement-fixe",
     address: {
-      street: "5 avenue de la Porte de la Villette",
-      postalCode: "75019",
-      city: "Paris",
-      country: "France",
+      street: "Route de Pobè, carrefour Ouando",
+      district: "Ouando",
+      city: "Porto-Novo",
+      department: "Ouémé",
+      country: "Bénin",
     },
-    coordinates: { latitude: 48.8975, longitude: 2.3866 },
+    coordinates: { latitude: 6.4969, longitude: 2.6289 },
     contact: {
-      phone: "01 99 00 22 08",
-      email: "don.nord-villette@savethem.example",
+      phone: "+229 01 00 00 22 08",
+      email: "ouando@savethem.example",
+      website: "https://ouando.savethem.example",
     },
-    // Pause déjeuner : deux créneaux le même jour.
+    // Nocturne le jeudi : le seul centre ouvert après 19 h.
     openingHours: [
-      ...slots(MON_TO_FRI, "08:30", "12:30"),
-      ...slots(MON_TO_FRI, "13:30", "17:00"),
-    ],
-    donationTypes: ["sang-total", "plasma"],
-    appointmentMode: "sur-rendez-vous",
-  },
-  {
-    id: "lyon-guillotiere",
-    name: "Maison du don Guillotière",
-    kind: "maison-du-don",
-    address: {
-      street: "32 grande rue de la Guillotière",
-      postalCode: "69007",
-      city: "Lyon",
-      country: "France",
-    },
-    coordinates: { latitude: 45.7503, longitude: 4.8422 },
-    contact: {
-      phone: "04 99 00 31 45",
-      email: "guillotiere@savethem.example",
-    },
-    openingHours: [
-      ...slots([2, 3, 4, 5], "10:00", "18:30"),
+      ...slots([1, 2, 3, 5], "08:00", "17:30"),
+      { day: 4, opensAt: "08:00", closesAt: "20:00" },
       { day: 6, opensAt: "09:00", closesAt: "14:00" },
     ],
     donationTypes: ["sang-total", "plasma", "plaquettes"],
     appointmentMode: "les-deux",
   },
   {
-    id: "lyon-doua-mobile",
-    name: "Collecte mobile Campus de la Doua",
-    kind: "collecte-mobile",
-    address: {
-      street: "Esplanade du campus, 20 avenue Albert Einstein",
-      postalCode: "69100",
-      city: "Villeurbanne",
-      country: "France",
-    },
-    coordinates: { latitude: 45.7817, longitude: 4.8697 },
-    contact: {
-      phone: "04 99 00 31 88",
-    },
-    // Collecte ponctuelle : deux après-midis par semaine.
-    openingHours: [
-      { day: 2, opensAt: "13:00", closesAt: "18:00" },
-      { day: 4, opensAt: "13:00", closesAt: "18:00" },
-    ],
-    donationTypes: ["sang-total"],
-    appointmentMode: "sans-rendez-vous",
-  },
-  {
-    id: "marseille-vieux-port",
-    name: "Établissement de transfusion Vieux-Port",
-    kind: "etablissement-fixe",
-    address: {
-      street: "18 quai de Rive Neuve",
-      postalCode: "13007",
-      city: "Marseille",
-      country: "France",
-    },
-    coordinates: { latitude: 43.2925, longitude: 5.3714 },
-    contact: {
-      phone: "04 99 00 45 12",
-      email: "vieux-port@savethem.example",
-    },
-    openingHours: [
-      ...slots(MON_TO_FRI, "08:00", "12:00"),
-      ...slots([1, 3, 5], "14:00", "18:00"),
-    ],
-    donationTypes: ["sang-total", "plasma"],
-    appointmentMode: "les-deux",
-  },
-  {
-    id: "marseille-luminy-mobile",
-    name: "Collecte mobile Université de Luminy",
-    kind: "collecte-mobile",
-    address: {
-      street: "163 avenue de Luminy, hall central",
-      postalCode: "13009",
-      city: "Marseille",
-      country: "France",
-    },
-    coordinates: { latitude: 43.2312, longitude: 5.4404 },
-    contact: {
-      phone: "04 99 00 45 60",
-    },
-    openingHours: [{ day: 3, opensAt: "11:00", closesAt: "17:30" }],
-    donationTypes: ["sang-total", "plasma"],
-    appointmentMode: "sans-rendez-vous",
-  },
-  {
-    id: "bordeaux-chartrons",
-    name: "Maison du don Chartrons",
+    id: "atlantique-abomey-calavi",
+    name: "Maison du don de Godomey",
     kind: "maison-du-don",
     address: {
-      street: "74 cours du Médoc",
-      postalCode: "33300",
-      city: "Bordeaux",
-      country: "France",
+      street: "Carrefour Godomey, immeuble en face du marché",
+      district: "Godomey",
+      city: "Abomey-Calavi",
+      department: "Atlantique",
+      country: "Bénin",
     },
-    coordinates: { latitude: 44.8586, longitude: -0.5637 },
+    coordinates: { latitude: 6.3789, longitude: 2.3312 },
     contact: {
-      phone: "05 99 00 52 77",
-      email: "chartrons@savethem.example",
+      phone: "+229 01 00 00 31 45",
+      email: "godomey@savethem.example",
     },
     openingHours: [
-      ...slots(MON_TO_FRI, "09:00", "17:00"),
-      { day: 6, opensAt: "09:00", closesAt: "12:30" },
+      ...slots(MON_TO_FRI, "08:00", "17:00"),
+      { day: 6, opensAt: "08:00", closesAt: "12:30" },
     ],
     donationTypes: ["sang-total", "plaquettes"],
     appointmentMode: "sur-rendez-vous",
   },
   {
-    id: "lille-euralille",
-    name: "Centre de transfusion Euralille",
+    id: "borgou-parakou",
+    name: "Établissement de transfusion de Banikanni",
     kind: "etablissement-fixe",
     address: {
-      street: "12 avenue Le Corbusier",
-      postalCode: "59777",
-      city: "Lille",
-      country: "France",
+      street: "Avenue de l'Indépendance, quartier Banikanni",
+      district: "Banikanni",
+      city: "Parakou",
+      department: "Borgou",
+      country: "Bénin",
     },
-    coordinates: { latitude: 50.6382, longitude: 3.0757 },
+    coordinates: { latitude: 9.3372, longitude: 2.6303 },
     contact: {
-      phone: "03 99 00 61 04",
-      email: "euralille@savethem.example",
-      website: "https://euralille.savethem.example",
+      phone: "+229 01 00 00 45 12",
+      email: "banikanni@savethem.example",
     },
-    // Nocturne le jeudi : le seul centre ouvert après 20 h.
+    // Pause de la mi-journée : deux créneaux le même jour.
     openingHours: [
-      ...slots([1, 2, 3, 5], "09:30", "18:00"),
-      { day: 4, opensAt: "09:30", closesAt: "21:00" },
-      { day: 6, opensAt: "10:00", closesAt: "16:00" },
-    ],
-    donationTypes: ["sang-total", "plasma", "plaquettes"],
-    appointmentMode: "les-deux",
-  },
-  {
-    id: "lille-wazemmes-mobile",
-    name: "Collecte mobile Halle de Wazemmes",
-    kind: "collecte-mobile",
-    address: {
-      street: "Place Nouvelle Aventure",
-      postalCode: "59000",
-      city: "Lille",
-      country: "France",
-    },
-    coordinates: { latitude: 50.6252, longitude: 3.0508 },
-    contact: {
-      phone: "03 99 00 61 39",
-    },
-    openingHours: [
-      { day: 0, opensAt: "09:00", closesAt: "13:00" },
-      { day: 6, opensAt: "09:00", closesAt: "17:00" },
-    ],
-    donationTypes: ["sang-total"],
-    appointmentMode: "sans-rendez-vous",
-  },
-  {
-    id: "toulouse-capitole",
-    name: "Maison du don Capitole",
-    kind: "maison-du-don",
-    address: {
-      street: "9 rue du Poids de l'Huile",
-      postalCode: "31000",
-      city: "Toulouse",
-      country: "France",
-    },
-    coordinates: { latitude: 43.6039, longitude: 1.4425 },
-    contact: {
-      phone: "05 99 00 73 21",
-      email: "capitole@savethem.example",
-    },
-    openingHours: [
-      ...slots([1, 2, 3, 4, 5], "10:00", "13:00"),
-      ...slots([1, 2, 3, 4, 5], "14:00", "18:30"),
+      ...slots(MON_TO_FRI, "08:00", "12:30"),
+      ...slots(MON_TO_FRI, "15:00", "18:00"),
     ],
     donationTypes: ["sang-total", "plasma"],
     appointmentMode: "les-deux",
   },
   {
-    id: "nantes-loire",
-    name: "Établissement de transfusion Bord de Loire",
-    kind: "etablissement-fixe",
+    id: "zou-abomey",
+    name: "Antenne hospitalière de Djègbé",
+    kind: "hopital",
     address: {
-      street: "4 quai François Mitterrand",
-      postalCode: "44200",
-      city: "Nantes",
-      country: "France",
+      street: "Route d'Abomey-Bohicon, quartier Djègbé",
+      district: "Djègbé",
+      city: "Abomey",
+      department: "Zou",
+      country: "Bénin",
     },
-    coordinates: { latitude: 47.2049, longitude: -1.5645 },
+    coordinates: { latitude: 7.1826, longitude: 1.9912 },
     contact: {
-      phone: "02 99 00 84 15",
-      email: "bord-de-loire@savethem.example",
+      phone: "+229 01 00 00 52 77",
+      email: "djegbe@savethem.example",
     },
-    openingHours: slots(MON_TO_FRI, "08:30", "16:30"),
-    donationTypes: ["sang-total", "plasma", "plaquettes"],
+    openingHours: [
+      ...slots(MON_TO_FRI, "08:00", "12:30"),
+      ...slots([1, 3, 5], "15:30", "18:00"),
+    ],
+    donationTypes: ["sang-total", "plasma"],
     appointmentMode: "sur-rendez-vous",
   },
   {
-    id: "strasbourg-krutenau",
-    name: "Maison du don Krutenau",
+    id: "mono-lokossa",
+    name: "Maison du don de Lokossa",
     kind: "maison-du-don",
     address: {
-      street: "21 rue de Zurich",
-      postalCode: "67000",
-      city: "Strasbourg",
-      country: "France",
+      street: "Esplanade de la mairie, centre-ville",
+      district: "Centre-ville",
+      city: "Lokossa",
+      department: "Mono",
+      country: "Bénin",
     },
-    coordinates: { latitude: 48.5798, longitude: 7.7574 },
+    coordinates: { latitude: 6.6389, longitude: 1.7167 },
     contact: {
-      phone: "03 99 00 95 62",
-      email: "krutenau@savethem.example",
+      phone: "+229 01 00 00 61 04",
+      email: "lokossa@savethem.example",
     },
-    openingHours: slots([1, 2, 4, 5], "11:00", "19:00"),
+    openingHours: slots(MON_TO_FRI, "08:00", "16:00"),
+    donationTypes: ["sang-total", "plasma"],
+    appointmentMode: "les-deux",
+  },
+  {
+    id: "atacora-natitingou",
+    name: "Maison du don de Natitingou",
+    kind: "maison-du-don",
+    address: {
+      street: "Route de l'Atacora, quartier Yimporima",
+      district: "Yimporima",
+      city: "Natitingou",
+      department: "Atacora",
+      country: "Bénin",
+    },
+    coordinates: { latitude: 10.3047, longitude: 1.3797 },
+    contact: {
+      phone: "+229 01 00 00 61 39",
+      email: "natitingou@savethem.example",
+    },
+    openingHours: slots([1, 2, 4, 5], "08:30", "16:00"),
     donationTypes: ["sang-total"],
     appointmentMode: "sans-rendez-vous",
+  },
+  {
+    id: "donga-djougou",
+    name: "Antenne hospitalière de Djougou",
+    kind: "hopital",
+    address: {
+      street: "Route de Parakou, quartier Zongo",
+      district: "Zongo",
+      city: "Djougou",
+      department: "Donga",
+      country: "Bénin",
+    },
+    coordinates: { latitude: 9.7085, longitude: 1.666 },
+    contact: {
+      phone: "+229 01 00 00 73 21",
+      email: "djougou@savethem.example",
+    },
+    openingHours: slots(MON_TO_FRI, "07:30", "15:30"),
+    donationTypes: ["sang-total"],
+    appointmentMode: "sur-rendez-vous",
+  },
+  {
+    id: "alibori-kandi",
+    name: "Collecte mobile de Kandi",
+    kind: "collecte-mobile",
+    address: {
+      street: "Place du marché, quartier administratif",
+      district: "Quartier administratif",
+      city: "Kandi",
+      department: "Alibori",
+      country: "Bénin",
+    },
+    coordinates: { latitude: 11.1342, longitude: 2.9386 },
+    contact: {
+      phone: "+229 01 00 00 84 15",
+    },
+    // Collecte hebdomadaire : un seul jour, d'où l'intérêt d'afficher la
+    // prochaine ouverture plutôt qu'un simple « fermé ».
+    openingHours: [{ day: 2, opensAt: "08:30", closesAt: "15:00" }],
+    donationTypes: ["sang-total"],
+    appointmentMode: "sans-rendez-vous",
+  },
+  {
+    id: "collines-dassa-zoume",
+    name: "Collecte mobile de Dassa-Zoumè",
+    kind: "collecte-mobile",
+    address: {
+      street: "Esplanade du centre de santé, centre-ville",
+      district: "Centre-ville",
+      city: "Dassa-Zoumè",
+      department: "Collines",
+      country: "Bénin",
+    },
+    coordinates: { latitude: 7.75, longitude: 2.1833 },
+    contact: {
+      phone: "+229 01 00 00 95 62",
+    },
+    openingHours: [{ day: 3, opensAt: "09:00", closesAt: "16:30" }],
+    donationTypes: ["sang-total", "plasma"],
+    appointmentMode: "sans-rendez-vous",
+  },
+  {
+    id: "couffo-aplahoue",
+    name: "Collecte mobile d'Aplahoué",
+    kind: "collecte-mobile",
+    address: {
+      street: "Sous les préaux du marché, centre-ville",
+      district: "Centre-ville",
+      city: "Aplahoué",
+      department: "Couffo",
+      country: "Bénin",
+    },
+    coordinates: { latitude: 6.9333, longitude: 1.6833 },
+    contact: {
+      phone: "+229 01 00 00 27 48",
+    },
+    // Le seul centre ouvert le week-end complet.
+    openingHours: [
+      { day: 0, opensAt: "09:00", closesAt: "13:00" },
+      { day: 6, opensAt: "08:30", closesAt: "16:00" },
+    ],
+    donationTypes: ["sang-total"],
+    appointmentMode: "sans-rendez-vous",
+  },
+  {
+    id: "plateau-pobe",
+    name: "Établissement de transfusion de Pobè",
+    kind: "etablissement-fixe",
+    address: {
+      street: "Route de Kétou, quartier Zongo",
+      district: "Zongo",
+      city: "Pobè",
+      department: "Plateau",
+      country: "Bénin",
+    },
+    coordinates: { latitude: 6.98, longitude: 2.665 },
+    contact: {
+      phone: "+229 01 00 00 38 06",
+      email: "pobe@savethem.example",
+    },
+    openingHours: slots([1, 3, 5], "08:00", "13:00"),
+    donationTypes: ["sang-total", "plasma"],
+    appointmentMode: "les-deux",
   },
 ];

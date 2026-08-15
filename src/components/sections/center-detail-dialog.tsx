@@ -122,7 +122,11 @@ export function CenterDetailDialog({
                 <span>
                   {displayed.address.street}
                   <br />
-                  {displayed.address.postalCode} {displayed.address.city}
+                  {displayed.address.district}, {displayed.address.city}
+                  <br />
+                  <span className="text-muted">
+                    Département {displayed.address.department}
+                  </span>
                 </span>
               </li>
 

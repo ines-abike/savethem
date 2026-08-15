@@ -1,7 +1,6 @@
 import type { PreparationPhase } from "@/types";
 import { PREPARATION_TIPS } from "@/data/preparation";
 import { Container, Section, SectionHeader } from "@/components/ui/section";
-import { Callout } from "@/components/ui/callout";
 import { TrajectoryDot } from "@/components/illustrations/shapes";
 
 const PHASES: { key: PreparationPhase; label: string; caption: string }[] = [
@@ -76,17 +75,6 @@ export function Preparation() {
             );
           })}
         </div>
-
-        <Callout
-          tone="warning"
-          className="mt-12"
-          title="Et si ça se passe mal ?"
-        >
-          Personne ne vous promettra qu&apos;il ne se passera rien. Un
-          étourdissement ou une fatigue passagère arrivent, et l&apos;équipe
-          sait exactement quoi faire — c&apos;est pour cette raison que vous
-          restez sur place après le don plutôt que de repartir aussitôt.
-        </Callout>
       </Container>
     </Section>
   );

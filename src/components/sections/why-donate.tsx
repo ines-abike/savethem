@@ -55,15 +55,6 @@ export function WhyDonate() {
             </li>
           ))}
         </ul>
-
-        {/*
-          Les chiffres sont des ordres de grandeur, pas un relevé daté : le
-          dire explicitement coûte une ligne et évite une fausse précision.
-        */}
-        <p className="mt-10 max-w-2xl text-xs leading-relaxed text-background/90">
-          Ordres de grandeur arrondis, à titre indicatif. Les chiffres officiels
-          et à jour sont publiés par l&apos;Établissement français du sang.
-        </p>
       </Container>
     </Section>
   );

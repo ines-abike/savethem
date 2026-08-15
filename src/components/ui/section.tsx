@@ -37,7 +37,11 @@ export function Section({
       className={cn(
         "scroll-mt-20 py-20 sm:py-28",
         TONES[tone],
-        "relative overflow-hidden",
+        // `clip` et non `hidden` : les deux découpent les formes décoratives
+        // qui débordent, mais `hidden` crée un conteneur de défilement, ce
+        // qui casse tout `position: sticky` en descendance — l'illustration
+        // de la FAQ, notamment. `clip` ne crée pas de scrollport.
+        "relative overflow-clip",
         className,
       )}
     >

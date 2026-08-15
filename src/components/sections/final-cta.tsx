@@ -1,7 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
 import { Container, Section } from "@/components/ui/section";
-import { TrajectoryArc } from "@/components/illustrations/shapes";
 
 /**
  * Étape suivante (§27.9).
@@ -13,8 +12,6 @@ import { TrajectoryArc } from "@/components/illustrations/shapes";
 export function FinalCta() {
   return (
     <Section tone="surface">
-      <TrajectoryArc className="absolute inset-x-0 bottom-0 h-48 w-full text-primary/20" />
-
       <Container className="relative">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold text-balance text-ink sm:text-4xl">

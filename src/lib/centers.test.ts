@@ -25,27 +25,51 @@ describe("filterCenters — recherche libre", () => {
   });
 
   it("trouve par ville", () => {
-    const results = filter({ query: "lyon" });
-    expect(results.length).toBeGreaterThan(0);
-    expect(
-      results.every((c) => /lyon|villeurbanne/i.test(c.address.city)) ||
-        results.every((c) => c.name.toLowerCase().includes("lyon")),
-    ).toBe(true);
+    const results = filter({ query: "natitingou" });
+    expect(results).toHaveLength(1);
+    expect(results[0].address.city).toBe("Natitingou");
+  });
+
+  it("indexe aussi les points de repère de l'adresse", () => {
+    /*
+      Au Bénin on s'oriente au repère — « route de Parakou », « carrefour
+      Toyota », « en face du marché » — et non au numéro de voie. La rue est
+      donc indexée volontairement.
+
+      Effet de bord assumé, verrouillé ici pour qu'il reste un choix et non
+      une surprise : une route nommée d'après une ville ressort sur le nom de
+      cette ville. Chercher « parakou » remonte donc aussi Djougou, qui est
+      sur la route de Parakou.
+    */
+    const results = filter({ query: "parakou" });
+    expect(results.map((c) => c.address.city).sort()).toEqual([
+      "Djougou",
+      "Parakou",
+    ]);
   });
 
   it("ignore la casse et les accents", () => {
-    // « Établissement » saisi sans accent et en minuscules doit matcher.
-    expect(filter({ query: "etablissement" }).length).toBeGreaterThan(0);
+    // « Cadjèhoun » saisi sans accent et en minuscules doit matcher.
+    const results = filter({ query: "cadjehoun" });
+    expect(results).toHaveLength(1);
+    expect(results[0].address.district).toBe("Cadjèhoun");
   });
 
-  it("trouve par code postal", () => {
-    const results = filter({ query: "75019" });
+  it("trouve par quartier", () => {
+    // Au Bénin, on se repère au quartier avant la ville.
+    const results = filter({ query: "godomey" });
     expect(results).toHaveLength(1);
-    expect(results[0].address.postalCode).toBe("75019");
+    expect(results[0].address.district).toBe("Godomey");
+  });
+
+  it("trouve par département", () => {
+    const results = filter({ query: "borgou" });
+    expect(results).toHaveLength(1);
+    expect(results[0].address.department).toBe("Borgou");
   });
 
   it("accepte les mots dans le désordre", () => {
-    const results = filter({ query: "paris don" });
+    const results = filter({ query: "cotonou don" });
     expect(results.length).toBeGreaterThan(0);
   });
 
@@ -56,9 +80,9 @@ describe("filterCenters — recherche libre", () => {
 
 describe("filterCenters — filtres structurés", () => {
   it("filtre par ville exacte", () => {
-    const results = filter({ city: "Bordeaux" });
+    const results = filter({ city: "Cotonou" });
     expect(results.length).toBeGreaterThan(0);
-    expect(results.every((c) => c.address.city === "Bordeaux")).toBe(true);
+    expect(results.every((c) => c.address.city === "Cotonou")).toBe(true);
   });
 
   it("filtre par type de don", () => {
@@ -97,20 +121,27 @@ describe("filterCenters — filtres structurés", () => {
 
 describe("filterCenters — combinaisons", () => {
   it("cumule les critères", () => {
-    const results = filter({ city: "Lille", donationType: "plaquettes" });
-    expect(
-      results.every(
-        (c) =>
-          c.address.city === "Lille" && c.donationTypes.includes("plaquettes"),
-      ),
-    ).toBe(true);
+    const results = filter({ city: "Cotonou", donationType: "plaquettes" });
+    expect(results).toHaveLength(1);
+    expect(results[0].donationTypes).toContain("plaquettes");
+  });
+
+  it("restreint les plaquettes aux grandes villes du Sud", () => {
+    // L'aphérèse suppose un plateau technique : la répartition des types de
+    // don n'est pas uniforme, et le filtre doit le refléter.
+    const results = filter({ donationType: "plaquettes" });
+    expect(results.map((c) => c.address.city).sort()).toEqual([
+      "Abomey-Calavi",
+      "Cotonou",
+      "Porto-Novo",
+    ]);
   });
 
   it("atteint l'état vide sur une combinaison impossible", () => {
     // L'état « aucun résultat » doit être réellement atteignable, sinon on
     // ne peut pas le concevoir ni le tester dans l'interface.
     const results = filter({
-      city: "Strasbourg",
+      city: "Natitingou",
       donationType: "plaquettes",
     });
     expect(results).toHaveLength(0);
@@ -143,8 +174,8 @@ describe("countActiveFilters", () => {
   it("additionne les critères actifs", () => {
     expect(
       countActiveFilters({
-        query: "lyon",
-        city: "Lyon",
+        query: "cotonou",
+        city: "Cotonou",
         donationType: "plasma",
         openNow: true,
       }),

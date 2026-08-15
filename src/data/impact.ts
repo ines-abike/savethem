@@ -1,37 +1,53 @@
 import type { ImpactStat } from "@/types";
 
 /**
- * Chiffres d'impact de la section « Pourquoi donner » (C1).
+ * Chiffres d'impact de la section « Pourquoi donner » (C1), contexte béninois.
  *
- * Ce sont des **ordres de grandeur** communément diffusés dans la
- * communication publique française sur le don du sang, arrondis et présentés
- * comme tels. Ils ne sont pas issus d'un relevé daté : pour les chiffres
- * officiels et à jour, la page renvoie explicitement vers l'Établissement
- * français du sang.
+ * Aucun chiffre national de collecte n'est avancé : je n'ai pas de relevé
+ * daté et sourçable pour le Bénin, et fabriquer une statistique de santé
+ * publique serait plus coûteux en crédibilité qu'un cadrage assumé.
  *
- * On ne cite pas de décimale ni de millésime qu'on ne pourrait pas sourcer —
- * la précision feinte est plus coûteuse en crédibilité que l'arrondi assumé.
+ * Ce qui est affirmé ici tient donc à des repères vérifiables :
+ * - la recommandation de l'OMS (environ 1 % de la population donnant chaque
+ *   année pour couvrir les besoins d'un pays) ;
+ * - les principales indications de transfusion en Afrique de l'Ouest, à
+ *   savoir l'anémie sévère de l'enfant et l'hémorragie de l'accouchement ;
+ * - l'absence de substitut de synthèse au sang humain.
+ *
+ * Pour les données nationales à jour, la page renvoie vers l'Agence nationale
+ * pour la transfusion sanguine (ANTS).
  */
 
-export const IMPACT_SOURCE_URL = "https://dondesang.efs.sante.fr/";
+export const IMPACT_SOURCE_LABEL =
+  "Agence nationale pour la transfusion sanguine (ANTS) — Bénin";
+
+/**
+ * Repères de l'OMS sur la sécurité et la disponibilité du sang.
+ *
+ * ⚠️ À remplacer par l'adresse officielle de l'ANTS Bénin une fois vérifiée :
+ * je n'ai pas confirmé son URL et je préfère ne pas en inventer une.
+ */
+export const IMPACT_SOURCE_URL =
+  "https://www.who.int/news-room/fact-sheets/detail/blood-safety-and-availability";
 
 export const IMPACT_STATS: ImpactStat[] = [
   {
-    id: "besoins-quotidiens",
-    value: "~10 000",
-    label: "dons nécessaires chaque jour en France",
+    id: "seuil-oms",
+    value: "1 %",
+    label: "de la population, c'est ce qu'il faudrait chaque année",
     detail:
-      "Ce besoin ne baisse ni le week-end, ni pendant les vacances. C'est " +
-      "l'été et les périodes de fêtes que les réserves se tendent le plus.",
+      "C'est le seuil que l'OMS retient pour qu'un pays couvre ses besoins " +
+      "en produits sanguins. Un pourcentage qui paraît minuscule — et qui " +
+      "n'est atteint nulle part sans donneurs réguliers.",
   },
   {
-    id: "patients",
-    value: "~1 million",
-    label: "de patients soignés chaque année",
+    id: "qui-recoit",
+    value: "Enfants et mères",
+    label: "les deux profils les plus transfusés en Afrique de l'Ouest",
     detail:
-      "Accidents et hémorragies, mais surtout maladies du sang, cancers et " +
-      "interventions chirurgicales lourdes — la majorité des transfusions " +
-      "n'a rien à voir avec l'urgence spectaculaire.",
+      "Anémie sévère chez l'enfant, souvent liée au paludisme ; hémorragie " +
+      "au moment de l'accouchement chez la femme. On est loin de l'image de " +
+      "l'accident de la route à laquelle on pense d'abord.",
   },
   {
     id: "substitut",
@@ -39,19 +55,28 @@ export const IMPACT_STATS: ImpactStat[] = [
     label: "produit capable de remplacer le sang humain",
     detail:
       "Il n'existe aucun substitut de synthèse. Tout ce qui est transfusé " +
-      "aujourd'hui a été donné par quelqu'un.",
+      "aujourd'hui a été donné par quelqu'un, quelque part, quelques jours " +
+      "plus tôt.",
   },
 ];
 
 /**
  * Message porteur de la section rouge (§30.3).
  *
- * Volontairement descriptif plutôt qu'injonctif : le cadrage §19 proscrit
- * « vous devez donner ».
+ * Le parti pris éditorial du contexte béninois : dans une large partie de la
+ * région, quand un patient a besoin de sang, c'est encore souvent à sa
+ * famille qu'on demande de trouver des donneurs. Le don bénévole n'est donc
+ * pas un supplément d'âme — il évite à quelqu'un d'avoir à chercher dans
+ * l'urgence.
+ *
+ * C'est plus juste ici que le registre « votre don sauve des vies », et c'est
+ * descriptif plutôt qu'injonctif, comme le demande §19.
  */
-export const IMPACT_HEADLINE = "Votre don ne reste pas une poche de sang.";
+export const IMPACT_HEADLINE =
+  "Quand le sang manque, c'est la famille qui part en chercher.";
 
 export const IMPACT_LEAD =
-  "Il est séparé en plusieurs composants, qui partent vers plusieurs " +
-  "personnes. Un même don peut accompagner la chimiothérapie d'un patient, " +
-  "l'accouchement compliqué d'une femme et l'opération d'un accidenté.";
+  "Un proche hospitalisé, et voilà des gens qui téléphonent à tout leur " +
+  "carnet d'adresses en pleine nuit pour trouver un donneur compatible. " +
+  "Chaque don bénévole, donné à l'avance et sans que personne ne le réclame, " +
+  "c'est une famille de moins à qui on demandera ça.";

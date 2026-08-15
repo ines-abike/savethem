@@ -1229,6 +1229,49 @@ Les horaires bruts, eux, sont rendus côté serveur — ils sont statiques.
 
 Voir §16. Le sexe n'est demandé que si la personne a déjà donné.
 
+## 30.6 Pays de déploiement : le Bénin
+
+Savethem s'adresse au **Bénin**, pas à la France. Cette décision prime sur
+toute formulation antérieure du document.
+
+Conséquences :
+
+- **Répertoire** — un centre par département, soit les douze départements
+  (Alibori, Atacora, Atlantique, Borgou, Collines, Couffo, Donga, Littoral,
+  Mono, Ouémé, Plateau, Zou). Le maillage administratif devient la structure
+  du répertoire : aucune région sans point d'entrée.
+- **Adresses** — pas de code postal. On se repère au **quartier** et à un
+  point de référence (« carrefour Toyota, en face du stade »), ce que reflète
+  le modèle `address`. La rue est indexée dans la recherche, précisément
+  parce que le repère y est plus utile que la voie.
+- **Institution de référence** — l'Agence nationale pour la transfusion
+  sanguine (ANTS), et non l'EFS. Le benchmark UX du §5 reste valable :
+  ce sont des références de patterns, pas de contexte sanitaire.
+- **Message de la section rouge** — ancré sur une réalité régionale : quand
+  le sang manque, c'est encore souvent à la famille du patient qu'on demande
+  de trouver des donneurs. Le don bénévole évite à quelqu'un d'avoir à
+  chercher dans l'urgence. Plus juste ici que « votre don sauve des vies ».
+- **Indications de transfusion** — enfants (anémie sévère, souvent liée au
+  paludisme) et femmes (hémorragie de l'accouchement) sont les profils les
+  plus transfusés en Afrique de l'Ouest. L'image de l'accident de la route
+  est trompeuse et doit être corrigée dans la copie.
+- **Saisonnalité** — les besoins montent pendant la saison des pluies, avec
+  la recrudescence du paludisme. C'est ce qui donne un sens concret à
+  « pourquoi maintenant ».
+- **Objections locales** — la FAQ traite explicitement le matériel à usage
+  unique (crainte de contamination), la différence entre don familial de
+  remplacement et don bénévole, et l'absence de rémunération comme mesure de
+  sécurité transfusionnelle.
+
+### Chiffres : ce qu'on s'interdit
+
+Aucune statistique nationale de collecte n'est avancée : faute de relevé daté
+et sourçable pour le Bénin, fabriquer un chiffre de santé publique coûterait
+plus en crédibilité qu'un cadrage assumé. Les seuls repères chiffrés
+autorisés sont ceux qu'on peut défendre — la recommandation de l'OMS
+(environ 1 % de la population donnant chaque année) et l'absence de substitut
+de synthèse au sang humain.
+
 ---
 
 # Direction visuelle — Typographie et illustrations

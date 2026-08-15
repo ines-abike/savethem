@@ -19,7 +19,7 @@ _(Compléter au fur et à mesure : outils de design, de génération d'illustrat
 ### 1 — Initialisation et outillage
 
 **Prompt (résumé)**
-Brief complet du challenge transmis à l'IA, suivi de : initialiser le projet en TypeScript / Next.js / Tailwind CSS, mettre en place ESLint, Husky, Prettier et les outils permettant de contrôler la qualité du code avant de pousser ; organiser le projet ; initialiser un dépôt GitHub ; vérifier que tout fonctionne.
+Brief complet du projet transmis à l'IA, suivi de : initialiser le projet en TypeScript / Next.js / Tailwind CSS, mettre en place ESLint, Husky, Prettier et les outils permettant de contrôler la qualité du code avant de pousser ; organiser le projet ; initialiser un dépôt GitHub ; vérifier que tout fonctionne.
 
 **Ce que l'IA a produit**
 

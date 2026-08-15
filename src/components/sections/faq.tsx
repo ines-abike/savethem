@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { FAQ_ENTRIES } from "@/data/faq";
 import { Accordion } from "@/components/ui/accordion";
 import { Container, Section, SectionHeader } from "@/components/ui/section";
@@ -22,7 +23,17 @@ export function Faq() {
           lead="Les vraies interrogations des personnes qui n'ont jamais donné — y compris celles qu'on n'ose pas poser sur place."
         />
 
-        <div className="mt-10 max-w-3xl">
+        {/*
+          Deux colonnes plutôt qu'un accordéon isolé : le flanc droit était
+          vide en `lg`. L'illustration y est `sticky`, donc elle reste en vue
+          pendant qu'on déplie les questions — le conteneur s'étire sur la
+          hauteur de la ligne (`items-stretch` par défaut), sans quoi rien
+          n'accrocherait.
+
+          Masquée sous `lg` : sur mobile elle repousserait les questions,
+          qui sont l'élément utile de la section.
+        */}
+        <div className="mt-10 grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,20rem)]">
           <Accordion
             items={FAQ_ENTRIES.map((entry) => ({
               id: entry.id,
@@ -30,6 +41,16 @@ export function Faq() {
               answer: entry.answer,
             }))}
           />
+
+          <div className="hidden lg:block">
+            <Image
+              src="/illustrations/questions-pana.svg"
+              alt=""
+              width={500}
+              height={500}
+              className="sticky top-28 h-auto w-full"
+            />
+          </div>
         </div>
       </Container>
     </Section>

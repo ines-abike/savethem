@@ -3,7 +3,6 @@ import {
   BLOOD_STOCKS,
   STOCKS_CONTEXT,
   STOCKS_REASSURANCE,
-  STOCKS_UPDATED_AT,
 } from "@/data/blood-stocks";
 import { ButtonLink } from "@/components/ui/button";
 import { Container, Section, SectionHeader } from "@/components/ui/section";
@@ -46,12 +45,6 @@ const LEVELS: Record<
 };
 
 export function BloodReserve() {
-  const updatedAt = new Intl.DateTimeFormat("fr-FR", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }).format(new Date(STOCKS_UPDATED_AT));
-
   return (
     <Section id="reserves" tone="surface">
       <Container>
@@ -109,11 +102,6 @@ export function BloodReserve() {
             Trouver un centre
           </ButtonLink>
         </div>
-
-        <p className="mt-8 text-xs leading-relaxed text-muted">
-          Données d&apos;illustration figées au {updatedAt}, créées pour ce
-          site. Elles ne reflètent pas l&apos;état réel des stocks.
-        </p>
       </Container>
     </Section>
   );

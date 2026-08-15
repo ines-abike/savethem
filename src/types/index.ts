@@ -28,10 +28,19 @@ export interface DonationCenter {
   id: string;
   name: string;
   kind: EstablishmentKind;
+  /**
+   * Adresse béninoise. Le pays n'utilise pas de code postal dans l'usage
+   * courant : on se repère au **quartier** et à un point de référence, ce que
+   * reflète ce modèle. Le département sert de maille administrative large.
+   */
   address: {
+    /** Rue, ou point de repère quand la voie n'est pas nommée. */
     street: string;
-    postalCode: string;
+    /** Quartier — l'unité de localisation réellement utilisée au Bénin. */
+    district: string;
     city: string;
+    /** Département (Littoral, Ouémé, Borgou…). */
+    department: string;
     country: string;
   };
   coordinates: {

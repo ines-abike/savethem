@@ -62,7 +62,7 @@ export function CenterCard({
           <span>
             {center.address.street}
             <br />
-            {center.address.postalCode} {center.address.city}
+            {center.address.district}, {center.address.city}
           </span>
         </p>
 

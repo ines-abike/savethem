@@ -40,6 +40,19 @@ export const STOCKS_CONTEXT =
   "transfusé à presque tout le monde en situation d'urgence — ce qui le rend " +
   "précieux même en petite quantité.";
 
+/**
+ * Repère saisonnier propre au contexte béninois.
+ *
+ * La saison des pluies s'accompagne d'une recrudescence du paludisme, donc
+ * de davantage d'anémies sévères à transfuser chez l'enfant. La tension sur
+ * les réserves n'est pas uniforme dans l'année, et le dire donne un sens
+ * concret à « pourquoi maintenant ».
+ */
+export const STOCKS_SEASON =
+  "Les besoins augmentent pendant la saison des pluies : le paludisme y est " +
+  "plus fréquent, et avec lui les anémies sévères qui se traitent par " +
+  "transfusion — surtout chez les jeunes enfants.";
+
 /** Rappel que tous les groupes comptent, y compris ceux affichés en vert. */
 export const STOCKS_REASSURANCE =
   "Un groupe bien approvisionné aujourd'hui ne le sera plus dans trois " +
