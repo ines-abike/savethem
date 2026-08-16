@@ -214,4 +214,230 @@ Six points ont été relevés :
 
 ---
 
-_(Sections suivantes à compléter : données et répertoire des centres, primitives d'interface, assemblage de la landing page, correctifs de contraste, ancrage Bénin, intégration de la marque et des illustrations.)_
+### 6 — Données statiques et logique métier des centres
+
+**Prompt (résumé)**
+Produire les données statiques du site — centres, réserves, FAQ, parcours du
+don, préparation, chiffres d'impact — et la logique de recherche et de statut
+d'ouverture qui va avec.
+
+**Ce que l'IA a produit**
+
+- `opening-hours.ts` : statut ouvert / fermé, créneaux multiples par jour
+  (pause déjeuner), prochaine ouverture sur sept jours glissants.
+- `centers.ts` : recherche libre insensible aux accents, filtres cumulables.
+- 59 tests Vitest sur les bornes d'âge, le débordement de fin de mois, la
+  pause déjeuner et les combinaisons de filtres.
+
+**Ajustements manuels / arbitrages**
+
+- **`now` injecté partout**, jamais lu depuis l'horloge système à
+  l'intérieur d'une fonction. C'est ce qui rend « ouvert maintenant » aussi
+  testable que le reste — un filtre dépendant de l'heure serait sinon le seul
+  comportement du site à ne pas être vérifiable.
+- **Établissements volontairement fictifs.** Rattacher de faux horaires au nom
+  d'un vrai centre de transfusion pourrait envoyer quelqu'un devant une porte
+  close. Sur un sujet de santé, c'est le risque qu'on refuse de prendre. Deux
+  tests verrouillent les garde-fous : domaines en `.example` (réservés par la
+  RFC 2606) et numéros hors plage réelle.
+
+**Limites rencontrées**
+
+- La première version des numéros de téléphone était présentée comme
+  appartenant à « la plage ARCEP réservée à la fiction ». L'affirmation était
+  fausse une fois le site ancré au Bénin, où l'ARCEP française ne s'applique
+  pas. Corrigée en documentant honnêtement le gabarit comme **une convention
+  interne, pas une plage officiellement réservée**. Une justification
+  plausible et bien formulée n'est pas une justification vérifiée.
+
+---
+
+### 7 — Vocabulaire visuel et primitives d'interface
+
+**Prompt (résumé)**
+Traduire le concept de trajectoire (§9) en formes réutilisables, puis
+construire les primitives d'interface nécessaires aux sections.
+
+**Ce que l'IA a produit**
+Cinq formes SVG (arc, flux, confluence, halo, jalon), toutes en
+`currentColor` et `aria-hidden`, et dix primitives : Button, Section, Badge,
+StatusIndicator, Callout, Field, RadioGroup, Accordion, Dialog, Stepper.
+
+**Arbitrages structurants**
+
+- **`<dialog>` natif** pour la fiche centre : piège clavier, `Échap` et
+  retour du focus obtenus gratuitement, zéro dépendance. Une modale
+  réimplémentée à la main aurait coûté plus cher et fonctionné moins bien.
+- **Radios natifs** sous le `RadioGroup` : la navigation aux flèches est
+  offerte par le navigateur. L'apparence est refaite, le comportement non.
+- **`StatusIndicator` porte toujours un libellé texte**, jamais la couleur
+  seule (§12).
+- **`Field` centralise le câblage `aria-describedby` / `aria-invalid`** : un
+  champ correctement associé à son erreur ne dépend plus de la vigilance de
+  celui qui l'écrit.
+- **`useClientNow` via `useSyncExternalStore`** plutôt qu'un `setState` dans
+  un effet : l'horloge est une source externe, avec un snapshot serveur
+  distinct — c'est exactement ce que cette API décrit.
+
+---
+
+### 8 — Assemblage de la landing page
+
+**Prompt (résumé)**
+Assembler les neuf sections dans l'ordre narratif décidé au cadrage, en
+traitant la recherche de centres comme une tâche et non comme un contenu.
+
+**Ajustements manuels / arbitrages**
+
+- **Le déroulement du don passe avant le simulateur.** Savoir ce qui va se
+  passer désamorce l'appréhension avant qu'on demande à quelqu'un son âge et
+  son poids. L'ordre du brief (C3 avant C4) est explicitement écarté.
+- **Trois centres affichés d'entrée, pas douze.** Douze fiches d'un bloc
+  noient la barre de filtres, qui est pourtant l'outil de la section.
+- **Le compteur annonce « 12 trouvés, 3 affichés »**, jamais « 12 trouvés »
+  seul : la seconde formulation est fausse pour qui ne voit pas la liste.
+- **L'état vide est un écran à part entière**, avec un bouton de sortie.
+  Sans lui, l'utilisateur reste devant une liste vide sans savoir quel filtre
+  l'a produite.
+- **Pas de menu burger.** La page est unique et chaque section se termine par
+  une étape suivante ; un burger n'aurait dupliqué le défilement qu'au prix
+  de JavaScript supplémentaire.
+
+---
+
+### 9 — Correctifs de contraste sur la surface rouge
+
+Passe d'accessibilité menée après l'assemblage, sur la seule grande section
+rouge.
+
+**Ce qui a été trouvé**
+`#C62828` ne contraste qu'à **5.62 : 1** avec le blanc pur. La marge au-dessus
+du seuil AA est mince, et la transparence l'épuise vite :
+
+```text
+blanc/90 → 4.81:1  AA
+blanc/85 → 4.43:1  échec
+blanc/80 → 4.07:1  échec
+blanc/60 → 2.86:1  échec
+```
+
+Trois éléments étaient sous le seuil : le surtitre (`/80`), le détail des
+chiffres (`/75`) et la note de bas de section (`/60`).
+
+**Ce que ça dit du réflexe corrigé**
+Baisser l'opacité pour créer de la hiérarchie fonctionne sur un fond sombre —
+`ink` tolère le blanc jusqu'à 50 %. Sur `primary`, le même geste casse
+l'accessibilité. La règle a été inscrite dans `CLAUDE.md` §26.2 et
+`SectionHeader` corrigé pour ne pas pouvoir réintroduire le défaut ailleurs.
+
+**Corrigés dans la même passe**
+
+- Un `<h2>` vide laissé par le `<dialog>` monté sans centre sélectionné.
+- Une grille 2×2 bancale de la timeline au point de rupture `sm`.
+- Le libellé du CTA d'en-tête, raccourci sous `sm` pour tenir à 390 px.
+
+---
+
+### 10 — Ancrage Bénin, marque et illustrations
+
+**Prompt (résumé)**
+Réancrer tout le contenu sur le Bénin, brancher les logos produits en phase 2,
+et intégrer des illustrations.
+
+**Ce que l'ancrage a changé**
+
+- Un centre **par département**, soit les douze : le maillage administratif
+  devient la structure du répertoire, personne n'est sans point d'entrée.
+- Adresses au **quartier et au point de référence** (« carrefour Toyota, en
+  face du stade ») plutôt qu'au code postal, qui n'existe pas ici.
+- Message de la section rouge réécrit : quand le sang manque, c'est encore
+  souvent à la famille du patient qu'on demande de trouver des donneurs. Plus
+  juste, localement, que « votre don sauve des vies ».
+- Indications de transfusion corrigées : enfants (anémie sévère liée au
+  paludisme) et femmes (hémorragie de l'accouchement) plutôt que l'accident de
+  la route, image trompeuse en Afrique de l'Ouest.
+- FAQ complétée des objections réellement locales : matériel à usage unique,
+  don familial de remplacement contre don bénévole, absence de rémunération
+  comme mesure de sécurité transfusionnelle.
+
+**Ce qu'on s'est interdit**
+Aucune statistique nationale de collecte n'est avancée : faute de relevé daté
+et sourçable pour le Bénin, fabriquer un chiffre de santé publique aurait
+coûté plus en crédibilité qu'un cadrage assumé.
+
+**Bugs trouvés et corrigés dans la même passe**
+
+- `shapes.tsx` avait été placé dans `public/`, où un composant React n'est pas
+  compilé et resterait téléchargeable en source. Les six imports visaient donc
+  un chemin inexistant : **la page rendait une erreur 500**.
+- `Section` passait `overflow-hidden`, qui crée un conteneur de défilement et
+  neutralisait tout `position: sticky` en descendance — dont l'illustration de
+  la FAQ. Remplacé par `overflow-clip`, qui découpe sans créer de scrollport.
+
+**Illustrations : écart assumé par rapport au cadrage**
+§30.1 décidait des SVG codés à la main, sans aucun asset externe. La page en
+service utilise deux illustrations de banque (Storyset). L'écart est consigné
+ici plutôt que passé sous silence : il donne des figures humaines qu'un tracé
+manuel n'aurait pas produites, au prix d'un registre visuel que d'autres
+projets peuvent utiliser aussi. **Arbitrage encore ouvert à la date de
+rédaction** — soit remplacement par des formes propres, soit conservation avec
+l'attribution qu'impose la licence.
+
+---
+
+### 11 — Relecture de conformité, page terminée
+
+**Prompt (résumé)**
+Reprendre le brief du challenge et confronter, point par point, ce qui est
+réellement dans le dépôt : contenus obligatoires, fonctionnalités, livrables.
+
+**Ce que la relecture a trouvé**
+
+1. **Une mention obligatoire disparue par régression.** Le pied de page
+   portait le rappel « seul un entretien médical fait foi » et la mention des
+   données fictives. Une réécriture ultérieure a supprimé les deux **en
+   laissant le commentaire qui affirmait les porter**. Le rappel n'existait
+   donc plus que dans le résultat du simulateur : invisible pour qui ne fait
+   pas le test, alors que le brief l'exige sur la page.
+2. **C2 « Qui peut donner » n'existait pas comme contenu.** Les critères
+   n'apparaissaient qu'en indication sous les champs du simulateur — donc
+   jamais ensemble, et jamais avant de commencer. Ajout d'une synthèse en
+   amont du test, dont les valeurs sont lues sur les constantes du domaine.
+3. **Une durée de nouveau écrite en dur.** `TOTAL_DURATION_MINUTES` était
+   calculée à partir des étapes pour qu'elles ne puissent pas diverger ; le
+   badge affichait « environ une heure » en clair, et l'import était devenu
+   mort. Le garde-fou existait, il n'était simplement plus branché.
+4. **« Code postal » dans la recherche de centres**, plusieurs versions après
+   la décision de n'en pas utiliser. Qui en saisissait un tombait sur l'état
+   vide.
+5. **README non tenu à jour** : le tableau des contenus annonçait encore huit
+   sections « à venir » alors qu'elles étaient livrées.
+
+**Ce que ça dit de la méthode**
+Les cinq points ont un trait commun : ce sont des **écarts entre ce que le
+code affirme et ce qu'il fait**. Aucun ne casse le build, aucun n'apparaît en
+lisant un fichier isolé — trois d'entre eux sont même nés d'une réécriture
+locale parfaitement correcte. Les commentaires d'intention, systématiques dans
+ce projet, ont ici servi de détecteurs : c'est l'écart entre le commentaire et
+le code en dessous qui a rendu la régression visible.
+
+**Limite rencontrée**
+Une relecture de conformité ne remplace pas un test manuel. Le rendu de 390 px
+à 1440 px, la fluidité réelle de la navigation clavier et le comportement du
+`<dialog>` sur mobile n'ont pas été vérifiés par cette passe et restent à
+faire à l'œil, dans un navigateur.
+
+---
+
+## Ce que l'IA n'a pas fait
+
+- **Les décisions produit.** L'ordre narratif, le refus des témoignages, le
+  choix de la section rouge, l'ancrage béninois, le renoncement aux
+  statistiques invérifiables : toutes ont été arbitrées par le porteur du
+  projet, souvent contre une première proposition du modèle.
+- **La vérification du réel.** Les sites du benchmark ont été ouverts et
+  regardés ; les chiffres non sourçables ont été écartés à la main.
+- **Le jugement sur ce qui manque.** Le modèle complète ce qu'on lui demande
+  ; il ne signale pas spontanément qu'une section obligatoire du brief n'a
+  jamais été écrite. Il a fallu lui redonner le brief et lui demander de
+  confronter, ce qui est un acte de pilotage, pas une capacité de l'outil.

@@ -93,8 +93,11 @@ La logique métier est couverte par des tests unitaires ([eligibility](src/lib/e
 
 ## Partis pris de conception
 
-**Le nom dit « sauvez-les », pas « donnez votre sang ».**
-Le projet s'est d'abord appelé HemoLink, le nom-exemple du brief : un nom construit sur le sang et sur le lien. Il a été abandonné parce qu'il désignait la matière plutôt que sa destination. Samethem signifie en français "sauvez-les" et dit **pourquoi le site existe**, la page dit **comment on décide**. Le symbole tranche dans le même sens : le S est formé de deux bras tendus l'un vers l'autre, pas d'une injonction ni d'un signe médical.
+Le projet s'est d'abord appelé HemoLink, le nom proposé comme exemple dans le brief. Il évoque le sang et le lien, mais désigne surtout ce qui est donné, plutôt que la raison pour laquelle on donne.
+
+Savethem — « sauvez-les » — prend le parti inverse : le nom exprime pourquoi le site existe. La page, elle, explique comment comprendre le don et prendre la décision de donner.
+
+Le choix se prolonge dans l'identité visuelle : le S est formé de deux bras qui se tendent l'un vers l'autre. Le symbole évoque ainsi l'entraide et le geste humain, plutôt qu'une injonction à donner.
 
 **L'ordre des sections suit les questions du visiteur, pas la numérotation du brief.**
 Pourquoi j'irais → à quoi m'attendre → puis-je donner → comment me préparer → où aller → est-ce utile maintenant → et mes doutes. Le déroulement du don passe volontairement **avant** le simulateur : savoir ce qui va se passer désamorce l'appréhension avant qu'on demande à quelqu'un son âge et son poids.
