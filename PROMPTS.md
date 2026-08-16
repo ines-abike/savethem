@@ -6,17 +6,140 @@ L'objectif est l'honnêteté intellectuelle plutôt que l'exhaustivité : les é
 
 ## Outils sollicités
 
-| Outil                                  | Usage                                                                  |
-| -------------------------------------- | ---------------------------------------------------------------------- |
-| Claude Code (Opus 5), extension VSCode | Initialisation du projet, outillage qualité, logique métier, rédaction |
+| Outil                                  | Phase                            | Usage                                                                                                       |
+| -------------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| ChatGPT (interface web)                | Amont, avant toute ligne de code | Cadrage produit, benchmark UX, direction artistique, rédaction itérative de `CLAUDE.md`, génération du logo |
+| Claude Code (Opus 5), extension VSCode | Exécution                        | Initialisation du projet, outillage qualité, logique métier, design system, sections, rédaction             |
 
-_(Compléter au fur et à mesure : outils de design, de génération d'illustrations, etc.)_
+### Ce que ce découpage a produit
+
+Le cadrage a été écrit dans un outil, exécuté dans un autre. Conséquence
+observée : le document de cadrage est arrivé chez le modèle qui allait le
+mettre en œuvre comme un texte **externe**, pas comme sa propre production.
+
+C'est ce qui a rendu la relecture critique possible. Six contradictions
+internes ont été relevées à la lecture (section 5), dont une qui aurait
+faussé le simulateur d'éligibilité — un modèle qui relit un document qu'il
+vient lui-même d'écrire n'a aucune raison d'en contester les prémisses.
+
+Cet effet n'est pas revendiqué comme une stratégie décidée à l'avance : il est
+constaté après coup, et c'est à ce titre qu'il est consigné ici.
 
 ---
 
 ## Séquence des prompts
 
-### 1 — Initialisation et outillage
+### 1 — Cadrage produit, benchmark et direction artistique (ChatGPT)
+
+Toute la phase de réflexion précède l'ouverture de l'éditeur. Aucun code
+n'est écrit à ce stade.
+
+**Prompt (résumé)**
+Discussion ouverte sur le sujet : que doit être une landing page de don du
+sang qui ne ressemble pas à une landing page de don du sang. Puis benchmark
+des références du domaine (EFS, American Red Cross, Australian Red Cross
+Lifeblood, NHS Blood and Transplant), puis direction artistique — palette,
+typographie, registre visuel, ce qu'il faut éviter.
+
+**Méthode du benchmark**
+Mixte : les sites ont été ouverts et regardés de première main, ChatGPT
+servant à structurer la comparaison et à en extraire des patterns
+réutilisables plutôt qu'à décrire des sites qu'il n'avait pas sous les yeux.
+Cette précaution laisse une trace dans le document final, qui interdit
+explicitement d'attribuer un score à une référence « sans observation
+vérifiée de la version consultée » (§5).
+
+**Ce que l'échange a produit**
+
+- Les 7 insights UX (§6), dont celui qui structure tout le reste :
+  l'utilisateur ne cherche pas à donner, il cherche d'abord à savoir **s'il
+  peut** donner.
+- L'architecture narrative ordonnée par les questions mentales du
+  primo-donneur plutôt que par les sections du brief (§27).
+- La palette complète avec tokens nommés et usages (§26.2), la règle
+  sémantique « White apaise. Ink informe. Red fait agir. Green rassure. Gray
+  structure. » (§26.3), et la règle de rythme visuel des grandes surfaces
+  rouges (§26.4).
+- La décision de ne pas mettre de témoignages (§28) — dans un contexte de
+  santé, la réassurance passe par la transparence, pas par une promesse
+  d'expérience parfaite.
+
+**Rédaction de `CLAUDE.md`**
+Co-écrit par itérations, section par section : orientation donnée, rédaction
+proposée, correction, passage à la suivante. Le document fait environ
+40 000 caractères à la remise et constitue le cadrage produit du projet.
+
+**Arbitrage de méthode**
+Le fichier est nommé `CLAUDE.md` et versionné, plutôt que collé dans une
+mémoire d'assistant : il est ainsi rechargé à chaque session, relisible par
+un humain, et son historique est traçable dans git. Une copie en mémoire
+aurait divergé silencieusement du texte de référence.
+
+**Limites rencontrées**
+
+- Le modèle qui rédige un cadrage ne le contredit pas. Les six incohérences
+  relevées en section 5 étaient toutes présentes dans le document livré à la
+  fin de cette phase, et aucune n'a été signalée pendant sa rédaction.
+- La cohérence locale d'une section masque l'incohérence globale : §26.4
+  listait quatre entrées obligatoires pour le simulateur, §16 n'en affichait
+  que trois. Chaque section, prise isolément, était défendable.
+
+---
+
+### 2 — Génération du logo (ChatGPT)
+
+**Hors plan initial.** Aucun logo n'était prévu : le brief n'en demande pas,
+et le cadrage n'en parle pas. L'idée est venue en fin de phase amont.
+
+**Prompt (résumé)**
+Description d'un symbole formant la lettre **S** à partir de deux bras en
+rotation de 180°, chacun terminé par une main tendue vers l'autre — le lien
+entre deux personnes et le sens du geste. Rouge de la marque, mot-signe
+« avethem » à la suite. Registre humain, pas de croix médicale, pas de
+goutte de sang, pas de seringue.
+
+**Deux itérations** ont été nécessaires pour obtenir la version retenue.
+
+**Ce que l'IA a produit**
+Deux fichiers PNG : une version à mot-signe noir pour les fonds clairs, une
+version à mot-signe blanc pour les fonds sombres, le symbole restant rouge
+dans les deux cas.
+
+**Ajustements manuels / arbitrages**
+
+- **Retour au PNG après un essai de vectorisation.** Le passage en SVG a été
+  demandé au modèle, précisément pour les bénéfices listés plus bas. Le
+  résultat était inutilisable : formes déformées, courbes du symbole
+  méconnaissables. Le PNG validé a donc été conservé, et il fait foi —
+  décision documentée dans [logo.tsx](src/components/layout/logo.tsx).
+- **Deux images plutôt qu'un filtre CSS.** Le mot-signe bascule du noir au
+  blanc pendant que le symbole garde son rouge : aucun filtre ne produit
+  cette double règle proprement.
+- **Marges transparentes inégales.** Les deux fichiers ne portent pas le même
+  vide à gauche (20 px contre 38 px). Sans correction, la marque du pied de
+  page se serait décalée d'environ 7 px par rapport au paragraphe qu'elle
+  surplombe. L'inset est annulé au rendu, variante par variante.
+
+**Limites rencontrées**
+
+- **Sortie raster, pas vectorielle.** Un logo généré est une image : il ne se
+  recolore pas par token, ne s'anime pas, et pèse une centaine de kilo-octets
+  là où un SVG équivalent en pèserait quelques-uns.
+- **La conversion en SVG demandée au modèle a échoué.** Un modèle qui génère
+  une image ne dispose pas du tracé qui l'a produite : il ne convertit pas, il
+  redessine de mémoire. Sur une forme construite — deux bras en rotation de
+  180° dont les courbes doivent se répondre exactement — la moindre dérive se
+  voit, et elle s'est vue. Un vectoriseur dédié ou un redessin manuel dans un
+  outil de dessin auraient été les bons instruments ; demander la conversion
+  au générateur ne l'était pas.
+- La contrainte raster est donc subie, pas choisie. Elle est absorbée côté
+  rendu (deux fichiers, insets compensés, `next/image`) plutôt que contournée.
+- Le concept de trajectoire (§9) ne passe donc pas par la marque, mais par
+  les illustrations et les formes de la page.
+
+---
+
+### 3 — Initialisation et outillage
 
 **Prompt (résumé)**
 Brief complet du projet transmis à l'IA, suivi de : initialiser le projet en TypeScript / Next.js / Tailwind CSS, mettre en place ESLint, Husky, Prettier et les outils permettant de contrôler la qualité du code avant de pousser ; organiser le projet ; initialiser un dépôt GitHub ; vérifier que tout fonctionne.
@@ -43,7 +166,7 @@ Brief complet du projet transmis à l'IA, suivi de : initialiser le projet en Ty
 
 ---
 
-### 2 — Logique d'éligibilité
+### 4 — Logique d'éligibilité
 
 **Arbitrages sur l'algorithme de l'annexe**
 
@@ -55,17 +178,16 @@ Brief complet du projet transmis à l'IA, suivi de : initialiser le projet en Ty
 
 ---
 
-### 3 — Cadrage produit et design system
+### 5 — Transmission du cadrage et design system
 
 **Prompt (résumé)**
-Fourniture d'un document de cadrage produit/UX complet (benchmark EFS, Red Cross, Lifeblood, NHS ; principes UX ; architecture narrative ; palette ; typographie), déposé dans `CLAUDE.md` pour être chargé à chaque session. Consigne : en prendre connaissance et l'enregistrer.
+Le document issu de la section 1 est déposé dans `CLAUDE.md` pour être chargé à chaque session. Consigne : en prendre connaissance et l'enregistrer.
 
-**Arbitrage de méthode**
-Le document a été placé dans `CLAUDE.md` plutôt que dans une mémoire de l'assistant, précisément parce que `CLAUDE.md` est versionné et rechargé automatiquement : une copie en mémoire aurait divergé silencieusement. `CLAUDE.md` fait donc foi.
+Le document arrive donc chez un modèle qui n'en est pas l'auteur, avec une consigne explicite héritée du cadrage lui-même (§20) : challenger les décisions avant de les valider.
 
 **Incohérences détectées dans le document et corrigées**
 
-Le document demandait explicitement (§20) de challenger les décisions avant de les valider. Six points ont été relevés :
+Six points ont été relevés :
 
 1. **Nom résiduel.** Le document parlait encore de « HemoLink », le nom-exemple du brief. Renommé en Savethem (15 occurrences). Effet de bord non trivial : la piste conceptuelle du §9 reposait sur le mot _Link_ — elle ne tenait plus. Remplacée par le concept de **trajectoire** (« une poche de sang est le début d'un trajet qui va jusqu'à quelqu'un »), qui découle du nouveau nom et reste fidèle à l'intention d'origine : éviter un univers centré sur le sang.
 2. **Simulateur incohérent avec lui-même.** §26.4 listait 4 entrées obligatoires (âge, poids, sexe, dernier don) mais §16 n'affichait que 3 étapes, sans le sexe — or c'est lui qui détermine le délai (3 mois / 4 mois). Résolu sans ajouter d'étape : le sexe n'est demandé **que si la personne a déjà donné**, puisqu'il est inutile sinon. Cohérent avec la consigne « ne pas demander des informations inutiles ».
@@ -87,8 +209,9 @@ Le document demandait explicitement (§20) de challenger les décisions avant de
 
 **Limites rencontrées**
 
-- Le document de cadrage était cohérent sur le fond mais contenait plusieurs contradictions internes qu'une lecture rapide aurait laissé passer — et qu'une IA qui se contente d'exécuter n'aurait pas relevées. Le simulateur aurait notamment été construit à 3 entrées, donc avec un calcul de délai faux.
+- Le document de cadrage était cohérent sur le fond mais contenait plusieurs contradictions internes qu'une lecture rapide aurait laissé passer. Le simulateur aurait notamment été construit à 3 entrées, donc avec un calcul de délai faux. Voir section 1 sur ce que le changement d'outil a rendu possible ici.
+- Le passage d'un outil à l'autre a un coût : tout ce qui n'était pas dans le document écrit s'est perdu. Les raisons non consignées d'un arbitrage — pourquoi telle piste a été écartée pendant la phase amont — n'existent plus que dans la tête du porteur du projet.
 
 ---
 
-_(Sections suivantes à compléter : contenus rédactionnels, sections C1→C8, répertoire des centres, accessibilité, responsive.)_
+_(Sections suivantes à compléter : données et répertoire des centres, primitives d'interface, assemblage de la landing page, correctifs de contraste, ancrage Bénin, intégration de la marque et des illustrations.)_
