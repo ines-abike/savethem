@@ -6,10 +6,6 @@ L'objectif : qu'un visiteur qui n'a jamais donné reparte avec trois certitudes 
 
 > 🇧🇯 Le site s'adresse au **Bénin**. Les villes, quartiers et départements sont réels ; les établissements, horaires et contacts sont des **données d'illustration**, créées pour la démonstration.
 
-- **Démo** : https://ftc-ines-savethem.vercel.app/
-- **Dépôt** : https://github.com/ines-abike/savethem
-- **Méthodologie IA** : [PROMPTS.md](PROMPTS.md)
-
 ## Stack
 
 | Choix                | Version | Pourquoi                                                                     |
