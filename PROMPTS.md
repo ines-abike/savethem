@@ -47,20 +47,20 @@ servant à structurer la comparaison et à en extraire des patterns
 réutilisables plutôt qu'à décrire des sites qu'il n'avait pas sous les yeux.
 Cette précaution laisse une trace dans le document final, qui interdit
 explicitement d'attribuer un score à une référence « sans observation
-vérifiée de la version consultée » (§5).
+vérifiée de la version consultée ».
 
 **Ce que l'échange a produit**
 
-- Les 7 insights UX (§6), dont celui qui structure tout le reste :
+- Les 7 insights UX, dont celui qui structure tout le reste :
   l'utilisateur ne cherche pas à donner, il cherche d'abord à savoir **s'il
   peut** donner.
 - L'architecture narrative ordonnée par les questions mentales du
-  primo-donneur plutôt que par les sections du brief (§27).
-- La palette complète avec tokens nommés et usages (§26.2), la règle
+  primo-donneur plutôt que par les sections du brief.
+- La palette complète avec tokens nommés et usages, la règle
   sémantique « White apaise. Ink informe. Red fait agir. Green rassure. Gray
-  structure. » (§26.3), et la règle de rythme visuel des grandes surfaces
-  rouges (§26.4).
-- La décision de ne pas mettre de témoignages (§28) — dans un contexte de
+  structure. », et la règle de rythme visuel des grandes surfaces
+  rouges.
+- La décision de ne pas mettre de témoignages — dans un contexte de
   santé, la réassurance passe par la transparence, pas par une promesse
   d'expérience parfaite.
 
@@ -80,8 +80,8 @@ aurait divergé silencieusement du texte de référence.
 - Le modèle qui rédige un cadrage ne le contredit pas. Les six incohérences
   relevées en section 5 étaient toutes présentes dans le document livré à la
   fin de cette phase, et aucune n'a été signalée pendant sa rédaction.
-- La cohérence locale d'une section masque l'incohérence globale : §26.4
-  listait quatre entrées obligatoires pour le simulateur, §16 n'en affichait
+- La cohérence locale d'une section masque l'incohérence globale :
+  listait quatre entrées obligatoires pour le simulateur, n'en affichait
   que trois. Chaque section, prise isolément, était défendable.
 
 ---
@@ -134,7 +134,7 @@ dans les deux cas.
   au générateur ne l'était pas.
 - La contrainte raster est donc subie, pas choisie. Elle est absorbée côté
   rendu (deux fichiers, insets compensés, `next/image`) plutôt que contournée.
-- Le concept de trajectoire (§9) ne passe donc pas par la marque, mais par
+- Le concept de trajectoire ne passe donc pas par la marque, mais par
   les illustrations et les formes de la page.
 
 ---
@@ -233,7 +233,7 @@ d'ouverture qui va avec.
 ### 7 — Vocabulaire visuel et primitives d'interface
 
 **Prompt (résumé)**
-Traduire le concept de trajectoire (§9) en formes réutilisables, puis
+Traduire le concept de trajectoire en formes réutilisables, puis
 construire les primitives d'interface nécessaires aux sections.
 
 **Ce que l'IA a produit**
@@ -249,7 +249,7 @@ StatusIndicator, Callout, Field, RadioGroup, Accordion, Dialog, Stepper.
 - **Radios natifs** sous le `RadioGroup` : la navigation aux flèches est
   offerte par le navigateur. L'apparence est refaite, le comportement non.
 - **`StatusIndicator` porte toujours un libellé texte**, jamais la couleur
-  seule (§12).
+  seule.
 - **`Field` centralise le câblage `aria-describedby` / `aria-invalid`** : un
   champ correctement associé à son erreur ne dépend plus de la vigilance de
   celui qui l'écrit.
