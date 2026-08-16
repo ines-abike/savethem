@@ -89,6 +89,17 @@ export function Footer() {
             entretien médical avec un professionnel de santé peut confirmer
             votre aptitude au don.
           </p>
+
+          <p>
+            <strong className="font-semibold text-background">
+              Données d&apos;illustration.
+            </strong>{" "}
+            Les centres, horaires, contacts et niveaux de réserve affichés ont
+            été créés pour la démonstration de ce site. Les villes et
+            départements sont réels, les établissements ne le sont pas :
+            renseignez-vous auprès de l&apos;Agence nationale pour la
+            transfusion sanguine avant de vous déplacer.
+          </p>
         </div>
       </Container>
     </footer>
