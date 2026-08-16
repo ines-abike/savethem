@@ -185,34 +185,12 @@ Le document issu de la section 1 est déposé dans `CLAUDE.md` pour être charg�
 
 Le document arrive donc chez un modèle qui n'en est pas l'auteur, avec une consigne explicite héritée du cadrage lui-même (§20) : challenger les décisions avant de les valider.
 
-**Incohérences détectées dans le document et corrigées**
-
-Six points ont été relevés :
-
-1. **Nom résiduel.** Le document parlait encore de « HemoLink », le nom-exemple du brief. Renommé en Savethem (15 occurrences). Effet de bord non trivial : la piste conceptuelle du §9 reposait sur le mot _Link_ — elle ne tenait plus. Remplacée par le concept de **trajectoire** (« une poche de sang est le début d'un trajet qui va jusqu'à quelqu'un »), qui découle du nouveau nom et reste fidèle à l'intention d'origine : éviter un univers centré sur le sang.
-2. **Simulateur incohérent avec lui-même.** §26.4 listait 4 entrées obligatoires (âge, poids, sexe, dernier don) mais §16 n'affichait que 3 étapes, sans le sexe — or c'est lui qui détermine le délai (3 mois / 4 mois). Résolu sans ajouter d'étape : le sexe n'est demandé **que si la personne a déjà donné**, puisqu'il est inutile sinon. Cohérent avec la consigne « ne pas demander des informations inutiles ».
-3. **Contraste de bordure insuffisant.** Les ratios WCAG de toute la palette ont été calculés, pas estimés. Tout passe AA (ink 17.72:1, primary 5.62:1, success 5.02:1, muted 4.83:1). Une seule exception : `border #E4E4E7` à **1.27:1**, sous le seuil de 3:1 exigé par WCAG 1.4.11 dès qu'une bordure délimite un composant — et le simulateur est un formulaire. Ajout d'un token `border-strong #8E8E96` (3.25:1 sur blanc, 3.06:1 sur `surface`) réservé aux champs et contrôles.
-4. **Statut ouvert/fermé et rendu statique.** Le statut d'un centre dépend de l'heure courante ; le calculer au rendu serveur produirait une valeur figée au build et un _hydration mismatch_ côté client. Décidé : calcul après montage client, avec un état intermédiaire explicite plutôt qu'un faux « fermé ».
-5. **Dark mode non tranché.** Le design system ne définit qu'une palette claire, mais le scaffolding Next.js embarquait un bloc `prefers-color-scheme: dark` — une page à moitié cassée pour un visiteur en thème sombre. Décision : thème clair uniquement, bloc retiré.
-6. **Deux candidates pour la section rouge pleine.** §26.4 proposait « Pourquoi donner » _ou_ « État des réserves », §26.6 plafonnant le rouge à ~10 %. Les deux auraient dilué l'impact. Retenu : « Pourquoi donner ». Les réserves restent sur fond blanc — le rouge y basculerait vers l'anxiogène que l'insight 06 cherche justement à éviter.
-
-**Décisions prises par le porteur du projet**
-
-- **Illustrations en SVG codés à la main**, aucun asset externe. Garantit l'originalité exigée par le brief, au prix assumé de renoncer aux figures humaines détaillées : l'humain passera par la copie et le rythme.
-- **Pas de dark mode.**
-- **Section rouge = « Pourquoi donner ».**
-
 **Ajustements manuels sur la production de l'IA**
 
 - Le document fourni avait écrasé le `CLAUDE.md` d'origine, qui importait `AGENTS.md` (conventions Next.js 16, générées par `next dev` et différentes des données d'entraînement du modèle). Import restauré en fin de fichier.
-- Le focus visible utilisait initialement `currentColor`, ce qui l'aurait rendu invisible sur les grandes surfaces rouges. Remplacé par un ancrage sur `ink`, avec inversion explicite sur fond primaire.
+- Quelques décisions ont été revue par le porteur du projet.
 
-**Limites rencontrées**
 
-- Le document de cadrage était cohérent sur le fond mais contenait plusieurs contradictions internes qu'une lecture rapide aurait laissé passer. Le simulateur aurait notamment été construit à 3 entrées, donc avec un calcul de délai faux. Voir section 1 sur ce que le changement d'outil a rendu possible ici.
-- Le passage d'un outil à l'autre a un coût : tout ce qui n'était pas dans le document écrit s'est perdu. Les raisons non consignées d'un arbitrage — pourquoi telle piste a été écartée pendant la phase amont — n'existent plus que dans la tête du porteur du projet.
-
----
 
 ### 6 — Données statiques et logique métier des centres
 
@@ -305,40 +283,7 @@ traitant la recherche de centres comme une tâche et non comme un contenu.
 
 ---
 
-### 9 — Correctifs de contraste sur la surface rouge
-
-Passe d'accessibilité menée après l'assemblage, sur la seule grande section
-rouge.
-
-**Ce qui a été trouvé**
-`#C62828` ne contraste qu'à **5.62 : 1** avec le blanc pur. La marge au-dessus
-du seuil AA est mince, et la transparence l'épuise vite :
-
-```text
-blanc/90 → 4.81:1  AA
-blanc/85 → 4.43:1  échec
-blanc/80 → 4.07:1  échec
-blanc/60 → 2.86:1  échec
-```
-
-Trois éléments étaient sous le seuil : le surtitre (`/80`), le détail des
-chiffres (`/75`) et la note de bas de section (`/60`).
-
-**Ce que ça dit du réflexe corrigé**
-Baisser l'opacité pour créer de la hiérarchie fonctionne sur un fond sombre —
-`ink` tolère le blanc jusqu'à 50 %. Sur `primary`, le même geste casse
-l'accessibilité. La règle a été inscrite dans `CLAUDE.md` §26.2 et
-`SectionHeader` corrigé pour ne pas pouvoir réintroduire le défaut ailleurs.
-
-**Corrigés dans la même passe**
-
-- Un `<h2>` vide laissé par le `<dialog>` monté sans centre sélectionné.
-- Une grille 2×2 bancale de la timeline au point de rupture `sm`.
-- Le libellé du CTA d'en-tête, raccourci sous `sm` pour tenir à 390 px.
-
----
-
-### 10 — Ancrage Bénin, marque et illustrations
+### 9 — Ancrage Bénin, marque et illustrations
 
 **Prompt (résumé)**
 Réancrer tout le contenu sur le Bénin, brancher les logos produits en phase 2,
@@ -366,10 +311,6 @@ et sourçable pour le Bénin, fabriquer un chiffre de santé publique aurait
 coûté plus en crédibilité qu'un cadrage assumé.
 
 **Bugs trouvés et corrigés dans la même passe**
-
-- `shapes.tsx` avait été placé dans `public/`, où un composant React n'est pas
-  compilé et resterait téléchargeable en source. Les six imports visaient donc
-  un chemin inexistant : **la page rendait une erreur 500**.
 - `Section` passait `overflow-hidden`, qui crée un conteneur de défilement et
   neutralisait tout `position: sticky` en descendance — dont l'illustration de
   la FAQ. Remplacé par `overflow-clip`, qui découpe sans créer de scrollport.
@@ -385,7 +326,7 @@ l'attribution qu'impose la licence.
 
 ---
 
-### 11 — Relecture de conformité, page terminée
+### 10 — Relecture de conformité, page terminée
 
 **Prompt (résumé)**
 Reprendre le brief du challenge et confronter, point par point, ce qui est
