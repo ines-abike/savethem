@@ -4,8 +4,6 @@ Landing page informative sur le don de sang, réalisée dans le cadre du **Figma
 
 L'objectif : qu'un visiteur qui n'a jamais donné reparte avec trois certitudes — **son éligibilité**, **où aller**, et **comment ça se passe**.
 
-> ⚕️ Les règles d'éligibilité implémentées sont simplifiées pour les besoins du challenge. Seul un entretien médical professionnel peut confirmer l'aptitude au don.
-
 > 🇧🇯 Le site s'adresse au **Bénin**. Les villes, quartiers et départements sont réels ; les établissements, horaires et contacts sont des **données d'illustration**, créées pour la démonstration.
 
 - **Démo** : https://ftc-ines-savethem.vercel.app/
