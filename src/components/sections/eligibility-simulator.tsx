@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import {
   birthDateForAge,
   checkEligibility,
+  DELAY_MONTHS,
   MAX_AGE,
   MIN_AGE,
   MIN_WEIGHT_KG,
@@ -33,6 +34,32 @@ import { EligibilityResultPanel } from "./eligibility-result";
  */
 
 const TOTAL_STEPS = 3;
+
+/**
+ * Synthèse des critères généraux (C2), affichée **avant** le test.
+ *
+ * Le brief liste « qui peut donner » comme un contenu à part entière, distinct
+ * du simulateur : quelqu'un doit pouvoir connaître les critères sans avoir à
+ * saisir quoi que ce soit. Les valeurs sont lues sur les constantes du
+ * domaine, donc l'affichage ne peut pas diverger du calcul.
+ */
+const CRITERIA = [
+  {
+    label: "Âge",
+    value: `De ${MIN_AGE} à ${MAX_AGE} ans révolus`,
+    detail: "C'est le seul critère qui ne peut pas être contourné.",
+  },
+  {
+    label: "Poids",
+    value: `${MIN_WEIGHT_KG} kg minimum`,
+    detail: "Le volume prélevé est proportionnel au volume sanguin.",
+  },
+  {
+    label: "Délai depuis le dernier don",
+    value: `${DELAY_MONTHS.homme} mois pour un homme, ${DELAY_MONTHS.femme} pour une femme`,
+    detail: "Aucun délai ne s'applique si vous n'avez jamais donné.",
+  },
+];
 
 type HasDonated = "oui" | "non";
 
@@ -162,8 +189,42 @@ export function EligibilitySimulator() {
         <SectionHeader
           eyebrow="Vérifier"
           title="Est-ce que je peux donner ?"
-          lead="Trois questions, moins d'une minute. Aucune donnée n'est enregistrée ni envoyée : tout est calculé dans votre navigateur."
+          lead="Trois questions, moins d'une minute. Aucune de vos données n'est enregistrée ni envoyée. Tout est calculé dans votre navigateur."
         />
+
+        {/*
+          Composition ouverte plutôt que trois cartes de plus : la carte du
+          formulaire, juste en dessous, doit rester l'objet saillant de la
+          section.
+
+          Les séparateurs sont verticaux et entre les colonnes : ils disent
+          « trois critères de même rang » là où un encadrement horizontal
+          n'aurait fait que délimiter un bloc de plus.
+        */}
+        <h3 className="mt-12 text-xl font-bold text-balance text-ink sm:text-2xl">
+          Les trois critères généraux
+        </h3>
+
+        <ul className="mt-6 grid gap-8 sm:grid-cols-3 sm:gap-0 sm:divide-x sm:divide-border">
+          {CRITERIA.map((criterion) => (
+            <li
+              key={criterion.label}
+              // Le padding symétrique place le trait au milieu de la
+              // gouttière plutôt que collé à la colonne suivante.
+              className="flex flex-col gap-1 sm:px-6 sm:first:pl-0 sm:last:pr-0 lg:px-8"
+            >
+              <p className="text-xs font-semibold tracking-[0.14em] text-muted uppercase">
+                {criterion.label}
+              </p>
+              <p className="text-base font-bold text-balance text-ink">
+                {criterion.value}
+              </p>
+              <p className="text-sm leading-relaxed text-pretty text-ink-secondary">
+                {criterion.detail}
+              </p>
+            </li>
+          ))}
+        </ul>
 
         <div className="mt-10 rounded-3xl border border-border bg-background p-6 sm:p-8 lg:p-10">
           {result ? (
@@ -192,11 +253,7 @@ export function EligibilitySimulator() {
               </p>
 
               {step === 1 && (
-                <Field
-                  label="Âge"
-                  hint={`Le don est ouvert de ${MIN_AGE} à ${MAX_AGE} ans révolus.`}
-                  error={errors.age}
-                >
+                <Field label="Âge" error={errors.age}>
                   {(field) => (
                     <input
                       {...field}
@@ -215,11 +272,7 @@ export function EligibilitySimulator() {
               )}
 
               {step === 2 && (
-                <Field
-                  label="Poids en kilogrammes"
-                  hint={`Un minimum de ${MIN_WEIGHT_KG} kg est requis : le volume prélevé est proportionnel au volume sanguin.`}
-                  error={errors.weight}
-                >
+                <Field label="Poids en kilogrammes" error={errors.weight}>
                   {(field) => (
                     <input
                       {...field}

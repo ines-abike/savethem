@@ -25,8 +25,7 @@ export const PREPARATION_TIPS: PreparationTip[] = [
     title: "Ne venez pas à jeun",
     description:
       "Mangez normalement dans les heures qui précèdent. Un repas léger et " +
-      "peu gras suffit — c'est le jeûne, pas le don, qui provoque le plus " +
-      "souvent les malaises.",
+      "peu gras suffit.",
   },
   {
     id: "avant-hydratation",

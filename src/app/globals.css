@@ -39,6 +39,59 @@
 
   /* — Typographie — */
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+
+  /*
+   * — Dérive des halos décoratifs (§9 — trajectoire) —
+   *
+   * Assez lente pour qu'on ne voie ni le départ ni l'arrivée : on ne perçoit
+   * pas le mouvement, on perçoit que la surface est vivante. Volontairement
+   * pas une pulsation — un battement ramènerait l'imaginaire médical que §9
+   * proscrit, et un rythme cardiaque en fond travaillerait contre une page
+   * qui cherche à faire baisser l'anxiété.
+   *
+   * Deux trajectoires distinctes plutôt qu'un délai sur la même : deux formes
+   * parcourant le même chemin à contretemps se lisent comme une boucle.
+   *
+   * `alternate` évite le saut de fin de cycle qu'un `infinite` simple
+   * produirait en revenant d'un coup à l'origine.
+   */
+  --animate-drift: drift 34s ease-in-out infinite alternate;
+  --animate-drift-slow: drift-slow 46s ease-in-out infinite alternate;
+
+  @keyframes drift {
+    from {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    to {
+      transform: translate3d(-26px, 20px, 0) scale(1.06);
+    }
+  }
+
+  @keyframes drift-slow {
+    from {
+      transform: translate3d(0, 0, 0) scale(1.05);
+    }
+    to {
+      transform: translate3d(24px, -16px, 0) scale(1);
+    }
+  }
+}
+
+/*
+ * Défilement fluide vers les ancres de navigation.
+ *
+ * Formulé en `no-preference` plutôt qu'en surcharge à annuler plus bas : on
+ * n'active l'animation que là où le mouvement est explicitement bienvenu,
+ * au lieu de l'imposer partout puis de la retirer avec un `!important`.
+ *
+ * Le défilement animé sert aussi la compréhension : il montre *d'où l'on
+ * vient*, alors qu'un saut instantané laisse le lecteur désorienté sur une
+ * page longue et monocolonne.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {

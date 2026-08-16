@@ -136,31 +136,3 @@ export function Halo({ className }: ShapeProps) {
     </svg>
   );
 }
-
-/**
- * Jalon de trajectoire — le point qui marque une étape.
- *
- * Utilisé sur la timeline du parcours du don : c'est la même grammaire que
- * l'arc, réduite à son plus petit élément.
- */
-export function TrajectoryDot({
-  className,
-  filled = false,
-}: ShapeProps & { filled?: boolean }) {
-  return (
-    <svg
-      {...decorative}
-      viewBox="0 0 16 16"
-      className={cn("pointer-events-none", className)}
-    >
-      <circle
-        cx="8"
-        cy="8"
-        r="6"
-        fill={filled ? "currentColor" : "none"}
-        stroke="currentColor"
-        strokeWidth="2"
-      />
-    </svg>
-  );
-}

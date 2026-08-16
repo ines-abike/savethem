@@ -9,7 +9,7 @@ import { isOpenNow } from "./opening-hours";
  */
 
 export interface CenterFilters {
-  /** Recherche libre : nom, ville ou code postal. */
+  /** Recherche libre : nom, ville, quartier, département ou rue. */
   query: string;
   /** Ville exacte, ou `null` pour toutes. */
   city: string | null;

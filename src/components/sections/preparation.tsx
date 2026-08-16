@@ -1,7 +1,6 @@
 import type { PreparationPhase } from "@/types";
 import { PREPARATION_TIPS } from "@/data/preparation";
 import { Container, Section, SectionHeader } from "@/components/ui/section";
-import { TrajectoryDot } from "@/components/illustrations/shapes";
 
 const PHASES: { key: PreparationPhase; label: string; caption: string }[] = [
   {
@@ -48,10 +47,7 @@ export function Preparation() {
               <section key={phase.key} className="flex flex-col gap-6">
                 <header className="flex flex-col gap-1 border-b border-border pb-4">
                   <div className="flex items-center gap-2">
-                    <TrajectoryDot
-                      filled
-                      className="size-3 shrink-0 text-primary"
-                    />
+                    <span className="h-3 w-3 rounded-full bg-primary"></span>
                     <h3 className="text-lg font-bold text-ink">
                       {phase.label}
                     </h3>

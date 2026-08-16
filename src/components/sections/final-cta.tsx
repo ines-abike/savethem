@@ -34,11 +34,6 @@ export function FinalCta() {
               Refaire le test
             </ButtonLink>
           </div>
-
-          <p className="mt-8 text-sm leading-relaxed text-pretty text-muted">
-            Un doute sur votre situation ? Venez quand même : l&apos;entretien
-            médical est fait pour ça, et il est sans engagement.
-          </p>
         </div>
       </Container>
     </Section>

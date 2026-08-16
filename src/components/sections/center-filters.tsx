@@ -38,8 +38,13 @@ export function CenterFilters({
       {/* 1 — Localisation */}
       <div className="grid gap-4 sm:grid-cols-[1fr_auto]">
         <div className="relative">
+          {/*
+            Pas de code postal : au Bénin on se repère au quartier et à un
+            point de référence (§30.6). Proposer un champ qui ne trouve rien
+            n'enverrait l'utilisateur que vers l'état vide.
+          */}
           <label htmlFor="center-search" className="sr-only">
-            Rechercher un centre par nom, ville ou code postal
+            Rechercher un centre par nom, ville ou quartier
           </label>
           <Search
             aria-hidden="true"
@@ -52,7 +57,7 @@ export function CenterFilters({
             onChange={(event) =>
               onChange({ ...filters, query: event.target.value })
             }
-            placeholder="Ville, code postal ou nom du centre"
+            placeholder="Ville, quartier ou nom du centre"
             className={cn(
               "border-border-strong bg-background text-ink placeholder:text-muted",
               "w-full rounded-xl border py-3 pr-4 pl-12 hover:border-ink-secondary",

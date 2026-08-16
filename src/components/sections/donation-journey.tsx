@@ -21,16 +21,6 @@ export function DonationJourney() {
   return (
     <Section id="deroulement" tone="surface">
       <Container>
-        {/*
-          L'illustration accompagne l'en-tête plutôt que la liste d'étapes :
-          elle montre le décor (fauteuil, pièce calme, soignant) que les
-          cartes décrivent ensuite minute par minute. C'est la seule section
-          où figurer la scène du don travaille pour le propos — dans le hero,
-          elle irait contre la consigne « rassurant et non anxiogène ».
-
-          Conservée sur mobile, contrairement à celle de la FAQ : ici elle
-          désamorce, elle ne décore pas.
-        */}
         <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)]">
           <div>
             <SectionHeader
@@ -42,8 +32,7 @@ export function DonationJourney() {
             <div className="mt-6">
               <Badge tone="primary">
                 <Clock aria-hidden="true" className="size-3.5" />
-                Environ {Math.round(TOTAL_DURATION_MINUTES / 5) * 5} minutes au
-                total
+                Comptez environ {TOTAL_DURATION_MINUTES} minutes sur place
               </Badge>
             </div>
           </div>
