@@ -183,7 +183,7 @@ Brief complet du projet transmis à l'IA, suivi de : initialiser le projet en Ty
 **Prompt (résumé)**
 Le document issu de la section 1 est déposé dans `CLAUDE.md` pour être chargé à chaque session. Consigne : en prendre connaissance et l'enregistrer.
 
-Le document arrive donc chez un modèle qui n'en est pas l'auteur, avec une consigne explicite héritée du cadrage lui-même (§20) : challenger les décisions avant de les valider.
+Le document arrive donc chez un modèle qui n'en est pas l'auteur, avec une consigne explicite héritée du cadrage lui-même : challenger les décisions avant de les valider.
 
 **Ajustements manuels sur la production de l'IA**
 
