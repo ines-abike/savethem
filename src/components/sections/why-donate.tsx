@@ -20,7 +20,7 @@ export function WhyDonate() {
       <Confluence className="absolute -top-6 right-0 hidden h-[420px] w-[560px] text-background/25 lg:block" />
 
       <Container className="relative">
-        <div className="max-w-2xl">
+        <div data-reveal className="max-w-2xl">
           {/*
             Aucune opacité sous 90 % sur cette surface : #C62828 ne contraste
             qu'à 5.62:1 avec le blanc pur, et le blanc à 80 % tombe déjà à
@@ -40,7 +40,12 @@ export function WhyDonate() {
           </p>
         </div>
 
-        <ul className="mt-14 grid gap-10 sm:grid-cols-3 sm:gap-8">
+        {/* Cascade sur les trois chiffres : ils se lisent l'un après l'autre,
+            le décalage rejoue cet ordre au lieu de les jeter d'un bloc. */}
+        <ul
+          data-reveal-group
+          className="mt-14 grid gap-10 sm:grid-cols-3 sm:gap-8"
+        >
           {IMPACT_STATS.map((stat) => (
             <li key={stat.id} className="flex flex-col gap-2">
               <p className="text-4xl font-bold text-background lg:text-5xl">

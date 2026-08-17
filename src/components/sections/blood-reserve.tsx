@@ -58,7 +58,10 @@ export function BloodReserve() {
           Grille et non tableau : à 390 px, un tableau à 4 colonnes déborde
           ou devient illisible (§18).
         */}
-        <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <ul
+          data-reveal-group
+          className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
+        >
           {BLOOD_STOCKS.map((stock) => {
             const level = LEVELS[stock.level];
 

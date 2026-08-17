@@ -37,7 +37,13 @@ export function Preparation() {
           lead="Rien de compliqué : une pièce d'identité, un repas, de l'eau. Le reste tient à savoir ce qui vous attend."
         />
 
-        <div className="mt-12 grid gap-10 lg:grid-cols-3 lg:gap-8">
+        {/* Cascade sur les trois colonnes, pas sur chaque conseil : le
+            découpage avant / pendant / après est l'information, le détail
+            interne n'a pas d'ordre à rejouer. */}
+        <div
+          data-reveal-group
+          className="mt-12 grid gap-10 lg:grid-cols-3 lg:gap-8"
+        >
           {PHASES.map((phase) => {
             const tips = PREPARATION_TIPS.filter(
               (tip) => tip.phase === phase.key,

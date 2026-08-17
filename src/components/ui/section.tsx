@@ -84,7 +84,10 @@ export function SectionHeader({
   const onPrimary = tone === "primary";
 
   return (
-    <header className={cn("max-w-2xl", className)}>
+    // L'en-tête apparaît d'un bloc plutôt qu'en cascade sur ses trois lignes :
+    // surtitre, titre et chapô forment une seule unité de lecture, les
+    // décaler les uns des autres ferait bégayer l'entrée de chaque section.
+    <header data-reveal className={cn("max-w-2xl", className)}>
       {eyebrow && (
         <p
           className={cn(

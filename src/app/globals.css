@@ -117,6 +117,21 @@ body {
   outline-color: var(--color-background);
 }
 
+/*
+ * États initiaux des révélations au défilement (cf. `motion/reveal-gate.tsx`).
+ *
+ * Tout est conditionné à `[data-motion="armed"]`, que seul le script
+ * d'armement pose. Sans JS, rien n'est masqué et la page reste intégralement
+ * lisible — c'est la contrainte non négociable sur un site d'information.
+ *
+ * Ces deux sélecteurs sont le miroir exact de ceux de `reveal-controller.tsx`.
+ * Modifier l'un sans l'autre laisserait des éléments invisibles.
+ */
+[data-motion="armed"] [data-reveal],
+[data-motion="armed"] [data-reveal-group] > * {
+  opacity: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

@@ -2,6 +2,7 @@ import { ArrowRight, MapPin } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
 import { Container } from "@/components/ui/section";
 import { Halo } from "@/components/illustrations/shapes";
+import Image from "next/image";
 
 /**
  * Hero (§01).
@@ -25,8 +26,8 @@ export function Hero() {
       <Halo className="absolute -top-32 -right-40 h-[560px] w-[560px] text-primary-subtle motion-safe:animate-drift" />
       <Halo className="absolute -bottom-28 -left-28 h-[360px] w-[360px] text-primary-subtle motion-safe:animate-drift-slow" />
 
-      <Container className="relative py-20 sm:py-28 lg:py-20">
-        <div className="max-w-3xl lg:max-w-2xl">
+      <Container className="relative flex items-center justify-between py-20 sm:py-28 lg:py-20">
+        <div data-reveal className="max-w-3xl lg:max-w-2xl">
           <h1 className="text-4xl font-bold text-balance text-ink sm:text-5xl lg:text-6xl">
             Comprendre le don de sang, c&apos;est le premier pas pour donner.
           </h1>
@@ -48,6 +49,25 @@ export function Hero() {
             </ButtonLink>
           </div>
         </div>
+        {/*
+          `alt` vide : l'illustration ne porte aucune information que le titre
+          et le chapô ne donnent déjà. « Hero » annoncé par un lecteur d'écran
+          ne décrit rien et ajoute du bruit.
+
+          Chargement empressé parce qu'elle est dans le premier écran : en
+          paresseux, la révélation animerait un cadre encore vide. `priority`
+          étant déprécié depuis Next 16, loading/fetchPriority le remplacent.
+        */}
+        <Image
+          data-reveal
+          src="/illustrations/blood-donation.svg"
+          alt=""
+          width={500}
+          height={500}
+          loading="eager"
+          fetchPriority="high"
+          className="mx-auto hidden h-auto w-full max-w-sm lg:block lg:max-w-none"
+        />
       </Container>
     </section>
   );

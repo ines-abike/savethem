@@ -57,7 +57,7 @@ export function DonationJourney() {
           une grille 2×2 bancale. La séquence est portée par les numéros, qui
           fonctionnent à toutes les largeurs.
         */}
-        <ol className="mt-12 grid gap-4 sm:grid-cols-2">
+        <ol data-reveal-group className="mt-12 grid gap-4 sm:grid-cols-2">
           {DONATION_STEPS.map((step, index) => (
             <li
               key={step.id}
