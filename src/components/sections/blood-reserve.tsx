@@ -82,7 +82,12 @@ export function BloodReserve() {
                   role="img"
                   aria-label={`Groupe ${stock.group} : réserve à ${stock.fillRate} %, ${level.label.toLowerCase()}`}
                 >
+                  {/*
+                    La largeur porte la donnée, l'animation ne fait que la
+                    dévoiler : sans JS, la barre est déjà à la bonne longueur.
+                  */}
                   <div
+                    data-reveal-bar
                     className={cn("h-full rounded-full", level.bar)}
                     style={{ width: `${stock.fillRate}%` }}
                   />

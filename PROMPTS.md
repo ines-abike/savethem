@@ -190,8 +190,6 @@ Le document arrive donc chez un modèle qui n'en est pas l'auteur, avec une cons
 - Le document fourni avait écrasé le `CLAUDE.md` d'origine, qui importait `AGENTS.md` (conventions Next.js 16, générées par `next dev` et différentes des données d'entraînement du modèle). Import restauré en fin de fichier.
 - Quelques décisions ont été revue par le porteur du projet.
 
-
-
 ### 6 — Données statiques et logique métier des centres
 
 **Prompt (résumé)**
@@ -311,6 +309,7 @@ et sourçable pour le Bénin, fabriquer un chiffre de santé publique aurait
 coûté plus en crédibilité qu'un cadrage assumé.
 
 **Bugs trouvés et corrigés dans la même passe**
+
 - `Section` passait `overflow-hidden`, qui crée un conteneur de défilement et
   neutralisait tout `position: sticky` en descendance — dont l'illustration de
   la FAQ. Remplacé par `overflow-clip`, qui découpe sans créer de scrollport.

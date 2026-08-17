@@ -14,6 +14,8 @@ L'objectif : qu'un visiteur qui n'a jamais donné reparte avec trois certitudes 
 | React                | 19      | —                                                                            |
 | TypeScript           | 5       | `strict` activé, types métier centralisés dans `src/types`                   |
 | Tailwind CSS         | 4       | Design tokens en CSS natif (`@theme`), identité visuelle 100 % custom        |
+| GSAP + ScrollTrigger | 3.15    | Révélations au défilement, pilotées par attributs (voir plus bas)            |
+| Vitest               | 4       | Tests de la logique métier, sans dépendance à React                          |
 | ESLint 9 + jsx-a11y  | —       | Flat config, règles d'accessibilité (navigation clavier exigée par le brief) |
 | Prettier             | 3       | Formatage unique, tri automatique des classes Tailwind                       |
 | Husky + lint-staged  | —       | Le code ne part pas cassé : lint + format au commit, typecheck au push       |
@@ -52,11 +54,15 @@ src/
 ├── components/
 │   ├── ui/               # Primitives réutilisables (bouton, carte, accordéon…)
 │   ├── layout/           # Header, footer, navigation
+│   ├── motion/           # Révélations au défilement (armement + contrôleur)
+│   ├── illustrations/    # Formes décoratives en SVG inline
 │   └── sections/         # Sections de la landing page (C1 → C8)
 ├── data/                 # Données statiques : centres, réserves, FAQ, étapes
 ├── hooks/                # Hooks React partagés
 ├── lib/                  # Logique métier pure
 │   ├── eligibility.ts    # Simulateur d'éligibilité (C3)
+│   ├── centers.ts        # Recherche et filtrage du répertoire (C6)
+│   ├── opening-hours.ts  # Statut ouvert / fermé à l'instant présent
 │   └── utils.ts          # Helper `cn` (clsx + tailwind-merge)
 └── types/                # Types métier partagés
 ```
@@ -83,7 +89,7 @@ La logique métier est couverte par des tests unitaires ([eligibility](src/lib/e
 | C5   | Préparation au don | [preparation.tsx](src/components/sections/preparation.tsx)                     | Avant / pendant / après, y compris les réactions possibles                    |
 | C6   | Où donner          | [donation-centers.tsx](src/components/sections/donation-centers.tsx)           | 12 centres (un par département), recherche + 3 filtres, fiche détaillée       |
 | C7   | État des réserves  | [blood-reserve.tsx](src/components/sections/blood-reserve.tsx)                 | Niveau porté par le libellé autant que par la couleur                         |
-| C8   | FAQ & idées reçues | [faq.tsx](src/components/sections/faq.tsx)                                     | 15 questions formulées comme on se les pose, objections locales incluses      |
+| C8   | FAQ & idées reçues | [faq.tsx](src/components/sections/faq.tsx)                                     | 14 questions formulées comme on se les pose, objections locales incluses      |
 
 ## Partis pris de conception
 
@@ -100,7 +106,7 @@ Pourquoi j'irais → à quoi m'attendre → puis-je donner → comment me prépa
 Trois étapes, et le sexe uniquement si la personne a déjà donné — il ne sert qu'à choisir entre 3 et 4 mois de délai. Trois statuts distincts plutôt qu'un booléen : « revenez le 12 mars » n'est pas un refus, et le ton de l'interface en tient compte.
 
 **Trouver un centre est traité comme une tâche, pas comme un contenu à lire.**
-Recherche libre, filtre ville, type de don, ouverture immédiate ; compteur en région live ; état vide avec une sortie. Le répertoire suit le maillage administratif du Bénin — un centre par département — pour que personne ne soit sans point d'entrée. Pas de code postal : ici on se repère au quartier et à un point de référence.
+Recherche libre, filtre ville, type de don, ouverture immédiate ; compteur de résultats dans une région `aria-live` ; état vide avec une sortie. Le répertoire suit le maillage administratif du Bénin — un centre par département — pour que personne ne soit sans point d'entrée. Pas de code postal : ici on se repère au quartier et à un point de référence.
 
 **Une seule grande surface rouge.**
 Le rouge est la couleur de l'identité et de l'action, pas du danger. Il est attribué à « Pourquoi donner », section émotionnelle. Les réserves restent sur fond blanc : le rouge y basculerait vers l'anxiogène. Un résultat d'éligibilité positif est vert, un blocage est neutre, une attente est ambrée.
@@ -111,8 +117,15 @@ Il dépend de l'heure courante : le calculer au rendu serveur le figerait au mom
 **Rassurer sans nier.**
 Le site ne promet pas qu'il ne se passera rien après le don. Il nomme les réactions possibles et la conduite à tenir, et rappelle que seul l'entretien médical fait foi. Pas de témoignages : dans un contexte de santé, la réassurance passe par la transparence, pas par une promesse d'expérience parfaite.
 
+**Les animations ne rendent jamais le contenu tributaire du JavaScript.**
+Le réflexe habituel — masquer en CSS, révéler au scroll — laisse une page blanche si le script ne s'exécute pas. Sur un site dont la fonction est d'informer quelqu'un sur sa santé, c'est inacceptable. Le schéma est donc inversé : rien n'est masqué par défaut, un script inline pose `data-motion` sur `<html>` avant la première peinture, et lui seul active les états initiaux. Sans JS, la page reste intégralement lisible ; un minuteur désarme au bout de 2,5 s si GSAP ne charge jamais.
+
+Les sections ne connaissent que trois attributs — `data-reveal`, `data-reveal-group`, `data-reveal-bar` — et n'importent jamais GSAP : elles restent des composants serveur, et la bibliothèque est remplaçable sans les toucher. Réservé au contenu éditorial statique ; les résultats filtrés et le résultat du simulateur en sont exclus, faute de déclencheur qui viendrait les révéler.
+
 **Accessibilité traitée pendant, pas après.**
 Focus déplacé entre les étapes du simulateur, résultats annoncés en `role="status"`, compteur de résultats en `aria-live`, niveaux de réserve jamais portés par la seule couleur, token `border-strong` (3.25:1) sur tous les champs pour satisfaire WCAG 1.4.11, et aucune opacité sous 90 % sur la surface rouge.
+
+`prefers-reduced-motion` est honoré à deux niveaux : le script d'armement ne masque rien du tout si la préférence est active, et `gsap.matchMedia()` défait les animations si elle change en cours de session. La dérive des halos décoratifs passe par `motion-safe:`, donc ne démarre jamais plutôt que d'être jouée en 0,01 ms puis figée.
 
 ## Méthodologie IA
 

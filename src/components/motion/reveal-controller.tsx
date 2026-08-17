@@ -24,6 +24,17 @@ const STAGGER = 0.08;
 const EASE = "power2.out";
 const START = "top 88%";
 
+/*
+ * Remplissage des jauges.
+ *
+ * Plus long qu'une arrivée de bloc : ici le mouvement **est** l'information —
+ * on doit voir la barre s'arrêter à sa hauteur, et comparer les huit groupes
+ * entre eux. Le retard laisse la carte se poser avant que sa jauge parte,
+ * sans quoi les deux mouvements se superposent et aucun ne se lit.
+ */
+const BAR_DURATION = 0.9;
+const BAR_DELAY = 0.15;
+
 /**
  * Contrôleur unique des révélations au défilement.
  *
@@ -33,6 +44,7 @@ const START = "top 88%";
  *
  *   `data-reveal`        — l'élément apparaît d'un bloc
  *   `data-reveal-group`  — ses enfants directs apparaissent en cascade
+ *   `data-reveal-bar`    — la barre se remplit depuis la gauche
  *
  * Corollaire : ne **pas** imbriquer un `data-reveal` dans un groupe. Les deux
  * sélecteurs ci-dessous doivent rester le miroir exact de ceux de
@@ -106,6 +118,42 @@ export function RevealController() {
             STAGGER,
           ),
         );
+
+      /*
+       * Remplissage des jauges.
+       *
+       * Chaque barre reçoit sa propre animation, y compris quand plusieurs
+       * partagent un déclencheur. Un `stagger` collectif supposerait de les
+       * regrouper d'abord, et une barre oubliée par ce regroupement resterait
+       * à `scaleX(0)` — donc invisible pour de bon. Ici, aucune barre ne peut
+       * être orpheline.
+       */
+      const rank = new Map<Element, number>();
+
+      gsap.utils.toArray<HTMLElement>("[data-reveal-bar]").forEach((bar) => {
+        /*
+         * Le groupe déclenche quand il y en a un : les huit jauges partent
+         * ensemble, ce qui les rend comparables. Déclenchée chacune à son
+         * propre passage, la dernière ligne se remplirait bien après que le
+         * regard a quitté la première.
+         */
+        const trigger = bar.closest<HTMLElement>("[data-reveal-group]") ?? bar;
+        const index = rank.get(trigger) ?? 0;
+        rank.set(trigger, index + 1);
+
+        gsap.fromTo(
+          bar,
+          { scaleX: 0 },
+          {
+            scaleX: 1,
+            transformOrigin: "left center",
+            duration: BAR_DURATION,
+            ease: EASE,
+            delay: BAR_DELAY + index * STAGGER,
+            scrollTrigger: { trigger, start: START, once: true },
+          },
+        );
+      });
     });
 
     /*

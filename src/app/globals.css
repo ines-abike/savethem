@@ -132,6 +132,19 @@ body {
   opacity: 0;
 }
 
+/*
+ * Jauges de réserve : repliées à gauche avant remplissage.
+ *
+ * `scaleX` plutôt que `width` : la largeur réelle reste écrite dans le
+ * balisage, donc juste sans JS, et il n'y a pas deux endroits à tenir à jour.
+ * GSAP pose ensuite une transformation en ligne, qui l'emporte sur cette
+ * règle sans qu'aucun `!important` soit nécessaire.
+ */
+[data-motion="armed"] [data-reveal-bar] {
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
