@@ -125,7 +125,6 @@ Les sections ne connaissent que trois attributs — `data-reveal`, `data-reveal-
 **Accessibilité traitée pendant, pas après.**
 Focus déplacé entre les étapes du simulateur, résultats annoncés en `role="status"`, compteur de résultats en `aria-live`, niveaux de réserve jamais portés par la seule couleur, token `border-strong` (3.25:1) sur tous les champs pour satisfaire WCAG 1.4.11, et aucune opacité sous 90 % sur la surface rouge.
 
-`prefers-reduced-motion` est honoré à deux niveaux : le script d'armement ne masque rien du tout si la préférence est active, et `gsap.matchMedia()` défait les animations si elle change en cours de session. La dérive des halos décoratifs passe par `motion-safe:`, donc ne démarre jamais plutôt que d'être jouée en 0,01 ms puis figée.
 
 ## Méthodologie IA
 
