@@ -2,8 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { ButtonLink } from "@/components/ui/button";
 import { Container } from "@/components/ui/section";
+import { MobileNav, type NavLink } from "./mobile-nav";
 
-const NAV_LINKS = [
+const NAV_LINKS: NavLink[] = [
   { href: "#pourquoi-donner", label: "Pourquoi donner" },
   { href: "#deroulement", label: "Déroulement" },
   { href: "#ou-donner", label: "Où donner" },
@@ -13,11 +14,13 @@ const NAV_LINKS = [
 /**
  * En-tête collant.
  *
- * Pas de menu burger sur mobile, à dessein : la page est unique, chaque
- * section se termine par une étape suivante, et les deux tâches réelles
- * (vérifier, trouver un centre) restent accessibles — l'une par le bouton
- * ci-dessous, l'autre depuis le résultat du simulateur. Un burger n'aurait
- * fait que dupliquer le défilement en ajoutant du JavaScript.
+ * Une seule liste de liens alimente les deux navigations : la barre au-delà
+ * de `lg`, le panneau déroulant en deçà. Elles ne coexistent jamais dans
+ * l'arbre d'accessibilité — chacune est en `display: none` à la largeur de
+ * l'autre — d'où deux `<nav>` sans conflit d'étiquette.
+ *
+ * Le composant reste rendu côté serveur : seule la bascule du menu est un
+ * îlot client (cf. `MobileNav`).
  */
 export function Header() {
   return (
@@ -62,16 +65,19 @@ export function Header() {
         </nav>
 
         {/*
-          Libellé raccourci sous `sm` : à 390 px, « Vérifier mon éligibilité »
-          et le logo se disputent la largeur. Le libellé complet reste dans le
-          DOM pour les lecteurs d'écran.
+          Le CTA n'apparaît qu'à partir de `lg`, où il ne dispute la largeur à
+          personne : en deçà, il vit dans le menu, avec « Trouver un centre ».
+          Plus besoin d'un libellé raccourci — il n'est plus jamais affiché à
+          une largeur où il ne tient pas.
         */}
-        <ButtonLink href="#puis-je-donner" className="shrink-0">
-          <span aria-hidden="true" className="sm:hidden">
-            Vérifier
-          </span>
-          <span className="max-sm:sr-only">Vérifier mon éligibilité</span>
+        <ButtonLink
+          href="#puis-je-donner"
+          className="hidden shrink-0 lg:inline-flex"
+        >
+          Vérifier mon éligibilité
         </ButtonLink>
+
+        <MobileNav links={NAV_LINKS} />
       </Container>
     </header>
   );
